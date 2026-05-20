@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Mail, Lock, LogIn, Ticket, Zap, Shield, CheckCircle2, Cpu } from "lucide-react";
 
 export default function Login() {
@@ -8,13 +8,11 @@ export default function Login() {
   const [msg, setMsg] = useState({ text: "", ok: true });
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/auth/login`, form);
+      const res = await axios.post("http://localhost:5000/api/auth/login", form);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", res.data.user.role);
       localStorage.setItem("name", res.data.user.name);
@@ -22,10 +20,10 @@ export default function Login() {
       setMsg({ text: "✅ Login successful! Redirecting...", ok: true });
       setTimeout(() => {
         const r = res.data.user.role;
-        if (r === "headadmin") navigate("/headadmin-dashboard");
-        else if (r === "admin") navigate("/admin-dashboard");
-        else if (r === "technician") navigate("/tech-dashboard");
-        else navigate("/dashboard");
+        window.location.href = r === "headadmin" ? "/headadmin-dashboard"
+          : r === "admin" ? "/admin-dashboard"
+          : r === "technician" ? "/tech-dashboard"
+          : "/dashboard";
       }, 800);
     } catch {
       setMsg({ text: "❌ Invalid credentials. Please try again.", ok: false });
@@ -49,7 +47,9 @@ export default function Login() {
         <div className="absolute bottom-0 right-0 w-[300px] h-[300px] rounded-full bg-[radial-gradient(circle,rgba(34,197,94,0.08)_0%,transparent_70%)] pointer-events-none"/>
 
         <div className="relative z-10 max-w-sm text-center">
-
+          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#F97316] to-[#EA580C] flex items-center justify-center mx-auto mb-6 shadow-[0_8px_32px_rgba(249,115,22,0.45)]">
+            <Ticket size={36} className="text-white"/>
+          </div>
           <h1 className="text-4xl font-black bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent mb-3 tracking-tight">SAMADHAN</h1>
           <p className="text-[#64748B] text-sm leading-relaxed mb-10">Smart AI-powered helpdesk for modern IT teams</p>
 
@@ -73,11 +73,13 @@ export default function Login() {
         <div className="w-full max-w-[400px] animate-fadeUp">
           {/* Mobile logo */}
           <div className="flex items-center gap-3 mb-8 lg:hidden">
-
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#F97316] to-[#EA580C] flex items-center justify-center shadow-[0_4px_16px_rgba(249,115,22,0.4)]">
+              <Ticket size={20} className="text-white"/>
+            </div>
             <span className="text-xl font-black bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent">SAMADHAN</span>
           </div>
 
-          <h2 className="text-3xl font-black text-[#F1F5F9] mb-2">Welcome back</h2>
+          <h2 className="text-3xl font-black text-[#F1F5F9] mb-2">Welcome back 👋</h2>
           <p className="text-[#64748B] text-sm mb-8">Sign in to your SAMADHAN account</p>
 
           {/* Message */}

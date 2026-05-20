@@ -25,7 +25,9 @@ export default function Header() {
 
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
-
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F97316] to-[#EA580C] flex items-center justify-center shadow-lg shadow-[#F97316]/40 group-hover:scale-110 transition-transform">
+            <Ticket size={18} className="text-white" />
+          </div>
           <span className="text-xl font-black bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent tracking-tight">
             SAMADHAN
           </span>

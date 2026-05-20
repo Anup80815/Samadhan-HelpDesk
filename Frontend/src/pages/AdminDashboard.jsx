@@ -19,7 +19,7 @@ export default function AdminDashboard() {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [createdUserInfo, setCreatedUserInfo] = useState({ email: "", password: "" });
 
-  const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const API_BASE = "http://localhost:5000";
   const getAuth = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
   const fetchUsers = async () => {
@@ -93,7 +93,9 @@ export default function AdminDashboard() {
       <aside className="relative z-20 w-64 flex-shrink-0 flex flex-col justify-between p-5 bg-[#0F0F17] border-r border-[#F97316]/10">
         <div>
           <div className="flex items-center gap-3 px-2 mb-9">
-
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F97316] to-[#EA580C] flex items-center justify-center shadow-[0_4px_16px_rgba(249,115,22,0.45)] shrink-0">
+              <Ticket size={18} className="text-white"/>
+            </div>
             <span className="text-lg font-black bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent">Admin Panel</span>
           </div>
 

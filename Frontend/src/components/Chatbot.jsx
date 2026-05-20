@@ -5,7 +5,7 @@ import { X, Send, Bot, Sparkles } from "lucide-react";
 export default function Chatbot() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { sender: "bot", text: "Hi! I'm your IT support assistant.\nDescribe your issue and I'll help you resolve it." },
+    { sender: "bot", text: "👋 Hi! I'm your IT support assistant.\nDescribe your issue and I'll help you resolve it." },
   ]);
   const [input, setInput] = useState("");
   const [botTyping, setBotTyping] = useState(false);
@@ -18,7 +18,7 @@ export default function Chatbot() {
     localStorage.getItem("jwt") ||
     "";
 
-  const API = `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/chat`;
+  const API = "http://localhost:5000/api/chat";
 
   const scrollToBottom = () =>
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });

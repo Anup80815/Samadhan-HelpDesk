@@ -21,7 +21,7 @@ export default function ForgotPassword() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/auth/forgot-password`, { email });
+      await axios.post("http://localhost:5000/api/auth/forgot-password", { email });
       showMsg("📩 OTP Sent to Email!", "success");
       setStage("otp");
       setTimer(60);
@@ -33,7 +33,7 @@ export default function ForgotPassword() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/auth/verify-forgot-otp`, { email, otp });
+      await axios.post("http://localhost:5000/api/auth/verify-forgot-otp", { email, otp });
       showMsg("✅ OTP Verified!", "success");
       setStage("reset");
     } catch { showMsg("❌ Incorrect OTP", "error"); }
@@ -42,7 +42,7 @@ export default function ForgotPassword() {
 
   const resendOTP = async () => {
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/auth/forgot-password`, { email });
+      await axios.post("http://localhost:5000/api/auth/forgot-password", { email });
       showMsg("🔄 OTP Resent!", "success");
       setTimer(60);
     } catch { showMsg("❌ Resend Failed", "error"); }
@@ -52,7 +52,7 @@ export default function ForgotPassword() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/auth/reset-password`, { email, newPass });
+      await axios.post("http://localhost:5000/api/auth/reset-password", { email, newPass });
       showMsg("🎉 Password Updated!", "success");
       setTimeout(() => window.location.href = "/login", 1500);
     } catch { showMsg("❌ Reset Failed", "error"); }
@@ -82,7 +82,9 @@ export default function ForgotPassword() {
         
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
-
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#F97316] to-[#EA580C] flex items-center justify-center shadow-[0_4px_16px_rgba(249,115,22,0.4)]">
+            <Ticket size={22} className="text-white"/>
+          </div>
           <span className="text-2xl font-black bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent">SAMADHAN</span>
         </div>
 

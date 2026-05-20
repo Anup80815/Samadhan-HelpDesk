@@ -1,5 +1,6 @@
 import { detectPriority } from "../utils/autoPriority.js";
 import { sendUserResolvedEmail } from "../utils/sendUserResolvedEmail.js";
+import { sendUserCreatedEmail } from "../utils/sendUserCreatedEmail.js";
 import { sendTechnicianEmail } from "../utils/sendTechnicianEmail.js";
 import express from "express";
 import Ticket from "../models/Ticket.js";
@@ -136,6 +137,16 @@ router.post("/", authMiddleware, async (req, res) => {
     });
 
     await ticket.save();
+
+    // ✅ SEND EMAIL TO CREATOR
+    const user = await User.findById(req.user.id);
+    if (user && user.email) {
+      try {
+        await sendUserCreatedEmail(user.email, ticket);
+      } catch (err) {
+        console.log("⚠️ Creator email failed:", err.message);
+      }
+    }
 
     const techList = await User.find({ 
       role: "technician",

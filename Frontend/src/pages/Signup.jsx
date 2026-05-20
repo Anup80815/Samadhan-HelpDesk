@@ -33,7 +33,7 @@ export default function Signup() {
     if (form.name.length<3) return showMsg("⚠️ Name must be at least 3 characters","warn");
     if (!form.email.includes("@")) return showMsg("⚠️ Enter a valid email","warn");
     if (form.password.length<6) return showMsg("⚠️ Password must be at least 6 characters","warn");
-    try { setLoading(true); const res = await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/auth/signup/request-otp`,form); showMsg(res.data.message||"📩 OTP sent!","success"); setStep(2); setCooldown(30); }
+    try { setLoading(true); const res = await axios.post("http://localhost:5000/api/auth/signup/request-otp",form); showMsg(res.data.message||"📩 OTP sent!","success"); setStep(2); setCooldown(30); }
     catch(err) { showMsg(err.response?.data?.message||"❌ Failed to send OTP","error"); }
     finally { setLoading(false); }
   };
@@ -41,14 +41,14 @@ export default function Signup() {
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     if (otpValue.length!==6) return showMsg("⚠️ Enter full 6-digit OTP","warn");
-    try { setLoading(true); await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/auth/signup/verify-otp`,{email:form.email,otp:otpValue}); showMsg("✅ Account verified!","success"); setTimeout(()=>window.location.href="/login",1500); }
+    try { setLoading(true); await axios.post("http://localhost:5000/api/auth/signup/verify-otp",{email:form.email,otp:otpValue}); showMsg("✅ Account verified!","success"); setTimeout(()=>window.location.href="/login",1500); }
     catch(err) { showMsg(err.response?.data?.message||"❌ Incorrect OTP","error"); }
     finally { setLoading(false); }
   };
 
   const handleResendOtp = async () => {
     if (cooldown>0) return;
-    try { setLoading(true); await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/auth/signup/request-otp`,form); showMsg("📩 OTP resent!","success"); setCooldown(30); }
+    try { setLoading(true); await axios.post("http://localhost:5000/api/auth/signup/request-otp",form); showMsg("📩 OTP resent!","success"); setCooldown(30); }
     catch { showMsg("❌ Failed to resend OTP","error"); }
     finally { setLoading(false); }
   };
@@ -69,7 +69,9 @@ export default function Signup() {
       <div className="w-full max-w-[440px] animate-fadeUp relative z-10">
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
-
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#F97316] to-[#EA580C] flex items-center justify-center shadow-[0_6px_24px_rgba(249,115,22,0.45)]">
+            <Ticket size={22} className="text-white"/>
+          </div>
           <span className="text-2xl font-black bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent">SAMADHAN</span>
         </div>
 
@@ -87,7 +89,7 @@ export default function Signup() {
             {step===1 ? "Create Account ✨" : "Verify OTP 🔐"}
           </h2>
           <p className="text-[#475569] text-sm mb-6 leading-relaxed">
-            {step===1 ? "Join SAMADHAN — your smart IT support platform" : `OTP sent to: ${form.email}`}
+            {step===1 ? "Join SAMADHAN — your smart IT support platform" : "OTP sent to: anup03101@gmail.com"}
           </p>
 
           {msg.text && (

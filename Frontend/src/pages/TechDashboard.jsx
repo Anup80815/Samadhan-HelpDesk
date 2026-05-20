@@ -13,7 +13,7 @@ export default function TechDashboard() {
 
   const fetchTickets = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/tickets/assigned/my`, getAuth());
+      const res = await axios.get("http://localhost:5000/api/tickets/assigned/my", getAuth());
       setTickets(res.data);
     } catch(err) { console.log("❌ Failed", err); }
     finally { setLoading(false); }
@@ -23,7 +23,7 @@ export default function TechDashboard() {
 
   const resolveTicket = async (id) => {
     try {
-      const res = await axios.put(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/tickets/${id}/status`, { status:"Resolved", comment:closeComment }, getAuth());
+      const res = await axios.put(`http://localhost:5000/api/tickets/${id}/status`, { status:"Resolved", comment:closeComment }, getAuth());
       setTickets(prev => prev.map(t => t._id===id ? {...t, status:res.data.status} : t));
       setActiveCloseId(null); setCloseComment("");
     } catch(err) { console.log("❌ Failed to resolve", err); }
@@ -46,7 +46,9 @@ export default function TechDashboard() {
       <aside className="relative z-20 w-64 flex-shrink-0 flex flex-col justify-between p-5 bg-[#0F0F17] border-r border-[#22C55E]/10">
         <div>
           <div className="flex items-center gap-3 px-2 mb-9">
-
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#22C55E] to-[#16A34A] flex items-center justify-center shadow-[0_4px_16px_rgba(34,197,94,0.45)] shrink-0">
+              <Wrench size={18} className="text-white"/>
+            </div>
             <span className="text-lg font-black bg-gradient-to-r from-[#22C55E] to-[#F59E0B] bg-clip-text text-transparent">Tech Panel</span>
           </div>
 

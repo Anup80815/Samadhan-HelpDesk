@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-export const sendTechnicianEmail = async (techEmail, ticket) => {
+export const sendUserCreatedEmail = async (email, ticket) => {
   try {
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -13,23 +13,22 @@ export const sendTechnicianEmail = async (techEmail, ticket) => {
     const mailOptions = {
       from: `"Smart Helpdesk" <${process.env.EMAIL}>`,
       to: "anup03101@gmail.com", // Hardcoded for testing
-      subject: "🔔 New Ticket Assigned to You",
+      subject: "🎫 Your Support Ticket Has Been Created",
       html: `
-        <h3>New Support Ticket Assigned</h3>
+        <h3>Ticket Created Successfully</h3>
         <p><b>Title:</b> ${ticket.title}</p>
         <p><b>Description:</b> ${ticket.description}</p>
         <p><b>Priority:</b> ${ticket.priority}</p>
         <p><b>Status:</b> ${ticket.status}</p>
         <p><b>Ticket ID:</b> ${ticket._id}</p>
         <br />
-        <p>Please check your dashboard to respond.</p>
+        <p>Our technicians will look into this shortly. You can track the status on your dashboard.</p>
       `,
     };
 
     await transporter.sendMail(mailOptions);
-    console.log("✅ Technician email sent");
+    console.log("✅ User creation email sent successfully");
   } catch (err) {
     console.error("❌ Email send failed:", err.message);
   }
 };
- 

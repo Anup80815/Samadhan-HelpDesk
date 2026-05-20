@@ -12,7 +12,7 @@ export default function Contact() {
     e.preventDefault();
     setStatus("Sending...");
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/contact`, form);
+      await axios.post("http://localhost:5000/api/contact", form);
       setStatus("✅ Message sent! We'll contact you soon.");
       setForm({ name: "", email: "", message: "" });
     } catch {

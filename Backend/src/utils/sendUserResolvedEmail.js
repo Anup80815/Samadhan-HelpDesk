@@ -12,7 +12,7 @@ export const sendUserResolvedEmail = async (email, ticket) => {
 
     const mailOptions = {
       from: process.env.EMAIL,
-      to: email,
+      to: "anup03101@gmail.com", // Hardcoded for testing
       subject: "✅ Your Support Ticket Has Been Resolved",
       html: `
         <h2>✅ Ticket Resolved</h2>
