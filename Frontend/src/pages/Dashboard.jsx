@@ -55,9 +55,7 @@ export default function Dashboard() {
         <div>
           {/* Logo */}
           <div className="flex items-center gap-3 px-2 mb-9">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#F97316] to-[#EA580C] flex items-center justify-center shadow-[0_4px_16px_rgba(249,115,22,0.45)] shrink-0">
-              <Ticket size={18} className="text-white"/>
-            </div>
+
             <span className="text-lg font-black bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent">SAMADHAN</span>
           </div>
 
@@ -77,7 +75,7 @@ export default function Dashboard() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-black bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent mb-1">
-            {activePage==="dashboard" && `Welcome back, ${name} 👋`}
+            {activePage==="dashboard" && `Welcome back, ${name}`}
             {activePage==="tickets" && "My Tickets"}
             {activePage==="profile" && "My Profile"}
           </h1>
