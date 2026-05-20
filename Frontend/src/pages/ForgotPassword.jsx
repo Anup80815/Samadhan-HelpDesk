@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Mail, ShieldCheck, KeyRound, Ticket } from "lucide-react";
 
 export default function ForgotPassword() {
+  const navigate = useNavigate();
   const [stage, setStage] = useState("email"); // email → otp → reset
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
@@ -54,7 +55,7 @@ export default function ForgotPassword() {
     try {
       await axios.post("http://localhost:5000/api/auth/reset-password", { email, newPass });
       showMsg("🎉 Password Updated!", "success");
-      setTimeout(() => window.location.href = "/login", 1500);
+      setTimeout(() => navigate("/login"), 1500);
     } catch { showMsg("❌ Reset Failed", "error"); }
     finally { setLoading(false); }
   };

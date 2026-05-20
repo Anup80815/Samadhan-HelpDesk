@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { User, Mail, Lock, Ticket, ShieldCheck, RefreshCw } from "lucide-react";
 
 export default function Signup() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({ name:"", email:"", password:"", role:"employee" });
   const [otp, setOtp] = useState(Array(6).fill(""));
   const inputRefs = useRef([]);
@@ -41,7 +42,7 @@ export default function Signup() {
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     if (otpValue.length!==6) return showMsg("⚠️ Enter full 6-digit OTP","warn");
-    try { setLoading(true); await axios.post("http://localhost:5000/api/auth/signup/verify-otp",{email:form.email,otp:otpValue}); showMsg("✅ Account verified!","success"); setTimeout(()=>window.location.href="/login",1500); }
+    try { setLoading(true); await axios.post("http://localhost:5000/api/auth/signup/verify-otp",{email:form.email,otp:otpValue}); showMsg("✅ Account verified!","success"); setTimeout(()=>navigate("/login"),1500); }
     catch(err) { showMsg(err.response?.data?.message||"❌ Incorrect OTP","error"); }
     finally { setLoading(false); }
   };
