@@ -82,9 +82,7 @@ export default function ForgotPassword() {
         
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#F97316] to-[#EA580C] flex items-center justify-center shadow-[0_4px_16px_rgba(249,115,22,0.4)]">
-            <Ticket size={22} className="text-white"/>
-          </div>
+
           <span className="text-2xl font-black bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent">SAMADHAN</span>
         </div>
 
