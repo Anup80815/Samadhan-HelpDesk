@@ -1,12 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, LogIn, Ticket, Zap, Shield, CheckCircle2, Cpu } from "lucide-react";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [msg, setMsg] = useState({ text: "", ok: true });
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -20,10 +22,10 @@ export default function Login() {
       setMsg({ text: "✅ Login successful! Redirecting...", ok: true });
       setTimeout(() => {
         const r = res.data.user.role;
-        window.location.href = r === "headadmin" ? "/headadmin-dashboard"
-          : r === "admin" ? "/admin-dashboard"
-          : r === "technician" ? "/tech-dashboard"
-          : "/dashboard";
+        if (r === "headadmin") navigate("/headadmin-dashboard");
+        else if (r === "admin") navigate("/admin-dashboard");
+        else if (r === "technician") navigate("/tech-dashboard");
+        else navigate("/dashboard");
       }, 800);
     } catch {
       setMsg({ text: "❌ Invalid credentials. Please try again.", ok: false });
