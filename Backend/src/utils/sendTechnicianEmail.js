@@ -12,7 +12,7 @@ export const sendTechnicianEmail = async (techEmail, ticket) => {
 
     const mailOptions = {
       from: `"Smart Helpdesk" <${process.env.EMAIL}>`,
-      to: "anup03101@gmail.com", // Hardcoded for testing
+      to: techEmail, // Dynamic tech email
       subject: "🔔 New Ticket Assigned to You",
       html: `
         <h3>New Support Ticket Assigned</h3>
