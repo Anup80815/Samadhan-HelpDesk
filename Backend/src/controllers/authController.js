@@ -66,7 +66,7 @@ export const requestSignupOtp = async (req, res) => {
     try {
       await createTransporter().sendMail({
         from: `"SAMADHAN Helpdesk" <${process.env.EMAIL}>`,
-        to: process.env.EMAIL,
+        to: email,
         subject: "SAMADHAN - Account Verification OTP",
         html: `
           <h2>Welcome to SAMADHAN Helpdesk 🎉</h2>
