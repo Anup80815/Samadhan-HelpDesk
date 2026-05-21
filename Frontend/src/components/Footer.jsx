@@ -9,7 +9,7 @@ export default function Footer() {
         </h3>
 
         <p className="text-[#94A3B8] text-base mb-2">
-          Built for Scale & Efficiency — crafted with 🧡 by <span className="font-semibold text-[#F1F5F9]">Peacemaker Team</span>
+          Built for Scale & Efficiency — crafted with 🧡 by <span className="font-semibold text-[#F1F5F9]">Anup Kumar</span>
         </p>
 
         <p className="text-[#475569] text-sm mb-10">
