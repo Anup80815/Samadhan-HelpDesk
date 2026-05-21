@@ -20,7 +20,7 @@ export default function Footer() {
         <div className="flex justify-center gap-8 text-sm font-medium flex-wrap text-[#64748B] mb-10">
           <a href="#features" className="hover:text-[#F97316] hover:scale-105 transition-all">Features</a>
           <a href="#workflow" className="hover:text-[#F97316] hover:scale-105 transition-all">Workflow</a>
-          <a href="#contact" className="hover:text-[#F97316] hover:scale-105 transition-all">Contact</a>
+          {/* <a href="#contact" className="hover:text-[#F97316] hover:scale-105 transition-all">Contact</a> */}
         </div>
 
         {/* Divider */}

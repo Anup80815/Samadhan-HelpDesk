@@ -24,10 +24,10 @@ export default function CTASection() {
             <Rocket size={20} /> Explore Dashboard
           </Link>
 
-          <Link to="#contact"
+          {/* <Link to="#contact"
             className="px-8 py-4 rounded-xl text-lg font-bold text-[#F1F5F9] bg-[#111118] border border-[#F97316]/20 hover:border-[#F97316]/50 hover:bg-[#F97316]/5 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2">
             <MessageCircle size={20} /> Contact Us
-          </Link>
+          </Link> */}
         </div>
       </div>
 
