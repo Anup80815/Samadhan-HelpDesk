@@ -9,17 +9,19 @@ import { useEffect } from "react";
 
 export default function LandingPage() {
   useEffect(() => {
-    // Add intersection observer for smooth fade-in animations
+    // Add intersection observer for ultra-smooth fade-in animations
     const sections = document.querySelectorAll(".fade-section");
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("opacity-100", "translate-y-0");
+            entry.target.classList.add("animate-smoothFadeUp");
+            entry.target.classList.remove("opacity-0");
+            observer.unobserve(entry.target); // Run once
           }
         });
       },
-      { threshold: 0.2 }
+      { threshold: 0.15 }
     );
     sections.forEach((section) => observer.observe(section));
     return () => sections.forEach((section) => observer.unobserve(section));
@@ -31,20 +33,20 @@ export default function LandingPage() {
       {/* <Chatbot/> */}
 
       {/* Enable smooth scrolling sitewide */}
-      <div className="scroll-smooth bg-[#0A0A0F] text-[#F1F5F9]">
-        <section id="home" className="fade-section opacity-0 translate-y-10 transition-all duration-700 ease-out">
+      <div className="scroll-smooth bg-[#fcfcfd] text-[#0f172a] min-h-screen">
+        <section id="home" className="fade-section opacity-0">
           <Hero />
         </section>
 
-        <section id="features" className="fade-section opacity-0 translate-y-10 transition-all duration-700 ease-out">
+        <section id="features" className="fade-section opacity-0">
           <FeaturesSection />
         </section>
 
-        <section id="workflow" className="fade-section opacity-0 translate-y-10 transition-all duration-700 ease-out">
+        <section id="workflow" className="fade-section opacity-0">
           <WorkflowSection />
         </section>
 
-        <section id="contact" className="fade-section opacity-0 translate-y-10 transition-all duration-700 ease-out">
+        <section id="contact" className="fade-section opacity-0">
           <CTASection />
         </section>
 

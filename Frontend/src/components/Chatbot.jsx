@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { X, Send, Bot, Sparkles } from "lucide-react";
+import { X, Send, Bot, Sparkles, MessageSquareText } from "lucide-react";
 
 export default function Chatbot() {
   const [open, setOpen] = useState(false);
@@ -70,50 +70,51 @@ export default function Chatbot() {
     <>
       {/* ═══ Floating Chat Button ═══ */}
       <div
-        className="fixed bottom-6 right-6 z-[9999] w-16 h-16 rounded-2xl flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 active:scale-95 bg-gradient-to-r from-[#F97316] to-[#EA580C] shadow-[0_8px_30px_rgba(249,115,22,0.5)]"
+        className="fixed bottom-6 right-6 z-[9999] w-16 h-16 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 active:scale-95 bg-slate-900 shadow-xl border border-slate-700/50"
         onClick={() => setOpen(!open)}
       >
-        {open ? <X className="text-white" size={24} /> : <Bot className="text-white" size={26} />}
+        {open ? <X className="text-white" size={26} strokeWidth={2.5} /> : <MessageSquareText className="text-white" size={28} strokeWidth={2} />}
       </div>
 
       {/* ═══ Chat Window ═══ */}
       {open && (
-        <div className="fixed bottom-24 right-6 z-[9999] w-[380px] h-[540px] rounded-2xl flex flex-col overflow-hidden animate-scaleIn bg-[#16161E]/80 backdrop-blur-2xl border border-[#F97316]/20 shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_40px_rgba(249,115,22,0.1)]">
+        <div className="fixed bottom-28 right-6 z-[9999] w-[380px] h-[560px] rounded-2xl flex flex-col overflow-hidden animate-scaleIn bg-white/95 backdrop-blur-2xl border border-slate-200 shadow-2xl">
 
           {/* Header */}
-          <div className="px-5 py-4 flex items-center justify-between bg-gradient-to-r from-[#F97316]/90 to-[#EA580C]/90 backdrop-blur-xl shadow-[0_4px_20px_rgba(249,115,22,0.3)]">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/20">
-                <Sparkles size={16} className="text-white" />
+          <div className="px-5 py-4 flex items-center justify-between bg-slate-900 shadow-md">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-white/10 border border-white/5 shadow-inner">
+                <Bot size={20} className="text-white" />
               </div>
               <div>
-                <span className="font-bold text-white text-sm">AI Support Agent</span>
-                <p className="text-[10px] text-white/80">Powered by Groq LLM</p>
+                <span className="font-semibold text-white text-sm tracking-wide">AI Support Agent</span>
+                <p className="text-[11px] text-slate-400 font-medium flex items-center gap-1">
+                  Powered by AI <Sparkles size={10} className="text-amber-400"/>
+                </p>
               </div>
             </div>
-            <button onClick={() => setOpen(false)} className="p-1.5 rounded-lg bg-white/15 hover:bg-white/25 transition-colors">
-              <X size={16} className="text-white" />
+            <button onClick={() => setOpen(false)} className="p-1.5 rounded-lg bg-white/5 hover:bg-white/15 transition-colors border border-transparent hover:border-white/10">
+              <X size={18} className="text-slate-300" />
             </button>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-transparent">
+          <div className="flex-1 p-5 overflow-y-auto space-y-4 bg-slate-50/50">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.sender === "user" ? "justify-end" : "justify-start"}`}>
-                <div className="max-w-[80%] px-4 py-2.5 text-sm leading-relaxed"
+                <div className="max-w-[85%] px-4 py-3 text-sm leading-relaxed shadow-sm"
                   style={{
                     borderRadius: m.sender === "user" ? "16px 16px 4px 16px" : "16px 16px 16px 4px",
-                    background: m.sender === "user" ? "linear-gradient(135deg, #F97316, #EA580C)" : "rgba(255,255,255,0.06)",
-                    color: m.sender === "user" ? "white" : "#E2E8F0",
-                    border: m.sender === "user" ? "none" : "1px solid rgba(255,255,255,0.08)",
-                    boxShadow: m.sender === "user" ? "0 4px 12px rgba(249,115,22,0.3)" : "none",
+                    background: m.sender === "user" ? "#0f172a" : "#ffffff",
+                    color: m.sender === "user" ? "#ffffff" : "#1e293b",
+                    border: m.sender === "user" ? "none" : "1px solid #e2e8f0",
                   }}>
                   {m.text.split("\n").map((line, idx) => {
                     const isLink = line.includes("http");
                     return (
-                      <p key={idx} className="mb-1 break-words last:mb-0">
+                      <p key={idx} className="mb-1.5 break-words last:mb-0">
                         {isLink ? (
-                          <a href={line.trim()} target="_blank" rel="noopener noreferrer" onClick={(e) => { e.preventDefault(); window.open("http://localhost:5173/Password%20Reset%20Manual.pdf", "_blank", "noopener,noreferrer"); }} className="underline font-medium text-[#FCD34D]">
+                          <a href={line.trim()} target="_blank" rel="noopener noreferrer" onClick={(e) => { e.preventDefault(); window.open("http://localhost:5173/Password%20Reset%20Manual.pdf", "_blank", "noopener,noreferrer"); }} className="underline font-semibold text-blue-400 hover:text-blue-300 transition-colors">
                             📄 Open Password Reset Manual
                           </a>
                         ) : (
@@ -128,10 +129,10 @@ export default function Chatbot() {
 
             {botTyping && (
               <div className="flex justify-start">
-                <div className="px-4 py-3 rounded-[16px_16px_16px_4px] flex items-center gap-1.5 bg-white/5 border border-white/[0.08]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#94A3B8] animate-bounce" style={{animationDelay:"0s"}}></span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#94A3B8] animate-bounce" style={{animationDelay:"0.2s"}}></span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#94A3B8] animate-bounce" style={{animationDelay:"0.4s"}}></span>
+                <div className="px-4 py-3.5 rounded-[16px_16px_16px_4px] flex items-center gap-1.5 bg-white border border-slate-200 shadow-sm">
+                  <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style={{animationDelay:"0s"}}></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style={{animationDelay:"0.2s"}}></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style={{animationDelay:"0.4s"}}></span>
                 </div>
               </div>
             )}
@@ -140,29 +141,31 @@ export default function Chatbot() {
           </div>
 
           {/* Quick Suggestions */}
-          <div className="px-3 py-2.5 flex gap-2 flex-wrap bg-[#111118]/80 backdrop-blur-md border-t border-white/5">
+          <div className="px-4 py-3 flex gap-2 overflow-x-auto bg-white border-t border-slate-100 hide-scrollbar">
             {[
-              { label: "🎫 Create Ticket", text: "create ticket" },
-              { label: "📡 WiFi Issue", text: "wifi not working" },
-              { label: "🔐 Login Issue", text: "login problem" },
+              { label: "🎫 Create Ticket", text: "I need to create a support ticket" },
+              { label: "🔐 Reset Password", text: "How do I reset my password?" },
+              { label: "📡 WiFi Issue", text: "My WiFi is not working" },
+              { label: "🖨️ Printer Error", text: "I can't connect to the printer" },
+              { label: "💻 Software Install", text: "I need help installing software" },
             ].map((s) => (
-              <button key={s.text} onClick={() => handleSuggestion(s.text)} className="text-[11px] px-3 py-1.5 rounded-lg font-medium transition-all duration-200 bg-[#F97316]/10 text-[#F97316] border border-[#F97316]/20 hover:bg-[#F97316]/20 hover:-translate-y-[1px]">
+              <button key={s.text} onClick={() => handleSuggestion(s.text)} className="whitespace-nowrap text-[12px] px-3 py-1.5 rounded-full font-medium transition-all duration-200 bg-white text-slate-700 border border-slate-200 shadow-sm hover:bg-slate-50 hover:border-slate-300 hover:shadow">
                 {s.label}
               </button>
             ))}
           </div>
 
           {/* Input */}
-          <div className="p-3 flex gap-2 items-center bg-[#111118]/80 backdrop-blur-md border-t border-white/5">
+          <div className="p-4 flex gap-2 items-center bg-white border-t border-slate-100">
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-              placeholder="Type your issue..."
-              className="flex-1 text-sm bg-[#0A0A0F] border border-white/10 rounded-full px-4 py-2.5 text-[#F1F5F9] outline-none focus:border-[#F97316] transition-colors"
+              placeholder="Describe your issue..."
+              className="flex-1 text-sm bg-slate-50 border border-slate-200 rounded-full px-4 py-2.5 text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all placeholder:text-slate-400"
             />
-            <button onClick={() => sendMessage()} className="p-2.5 rounded-full transition-all duration-200 hover:scale-105 active:scale-95 bg-gradient-to-r from-[#F97316] to-[#EA580C] shadow-[0_4px_14px_rgba(249,115,22,0.4)]">
-              <Send size={16} className="text-white" />
+            <button onClick={() => sendMessage()} className="p-2.5 rounded-full transition-all duration-200 hover:scale-105 active:scale-95 bg-slate-900 shadow-md flex items-center justify-center shrink-0">
+              <Send size={16} className="text-white ml-0.5" />
             </button>
           </div>
         </div>

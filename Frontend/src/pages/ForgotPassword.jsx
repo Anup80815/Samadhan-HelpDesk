@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, ShieldCheck, KeyRound, Ticket } from "lucide-react";
+import { Mail, ShieldCheck, KeyRound } from "lucide-react";
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
@@ -68,33 +68,32 @@ export default function ForgotPassword() {
   }, [stage, timer]);
 
   const msgCls = {
-    success: "bg-[#22C55E]/10 text-[#4ADE80] border-[#22C55E]/25",
-    error: "bg-[#EF4444]/10 text-[#FCA5A5] border-[#EF4444]/25",
-    info: "bg-[#F97316]/10 text-[#FDBA74] border-[#F97316]/25",
+    success: "bg-green-50 text-green-700 border-green-200",
+    error: "bg-red-50 text-red-700 border-red-200",
+    info: "bg-blue-50 text-blue-700 border-blue-200",
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0F] text-[#F1F5F9] flex items-center justify-center px-4 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex items-center justify-center px-4 relative overflow-hidden">
       
       {/* Glows */}
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(249,115,22,0.06)_0%,transparent_70%)] pointer-events-none"/>
+      <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.06)_0%,transparent_70%)] pointer-events-none"/>
       
       <div className="w-full max-w-[420px] animate-fadeUp z-10">
         
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
-
-          <span className="text-2xl font-black bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent">SAMADHAN</span>
+          <span className="text-3xl font-display font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent tracking-tight">SAMADHAN</span>
         </div>
 
         {/* Card */}
-        <div className="bg-[#16161E] border border-[#F97316]/10 rounded-3xl p-8 shadow-[0_24px_64px_rgba(0,0,0,0.5)]">
-          <h2 className="text-2xl font-bold mb-2">
+        <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
+          <h2 className="text-2xl font-semibold mb-2">
             {stage === "email" && "Forgot Password"}
             {stage === "otp" && "Verify OTP"}
             {stage === "reset" && "Set New Password"}
           </h2>
-          <p className="text-[#64748B] text-sm mb-6">
+          <p className="text-slate-500 text-sm mb-6">
             {stage === "email" && "Enter your email to receive a password reset code."}
             {stage === "otp" && `We sent a code to ${email}`}
             {stage === "reset" && "Enter your new strong password."}
@@ -109,10 +108,10 @@ export default function ForgotPassword() {
           {stage === "email" && (
             <form onSubmit={sendOTP} className="space-y-4">
               <div className="relative">
-                <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#475569] pointer-events-none"/>
+                <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"/>
                 <input type="email" required placeholder="Registered Email" className="inp !pl-11 w-full" onChange={(e) => setEmail(e.target.value)} />
               </div>
-              <button type="submit" disabled={loading} className="w-full py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-[#F97316] to-[#EA580C] hover:shadow-[0_4px_16px_rgba(249,115,22,0.3)] hover:scale-[1.02] transition-all disabled:opacity-50">
+              <button type="submit" disabled={loading} className="w-full py-3.5 rounded-xl font-semibold text-white bg-slate-900 hover:bg-slate-800 hover:shadow-lg hover:shadow-blue-500/10 hover:scale-[1.02] transition-all disabled:opacity-50">
                 {loading ? <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin inline-block"/> : "Send OTP"}
               </button>
             </form>
@@ -121,13 +120,13 @@ export default function ForgotPassword() {
           {stage === "otp" && (
             <form onSubmit={verifyOTP} className="space-y-4">
               <div className="relative">
-                <ShieldCheck size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#475569] pointer-events-none"/>
+                <ShieldCheck size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"/>
                 <input type="text" maxLength="6" required placeholder="Enter 6-digit OTP" className="inp !pl-11 w-full tracking-[0.5em] font-mono text-center" onChange={(e) => setOtp(e.target.value)} />
               </div>
-              <button type="submit" disabled={loading} className="w-full py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-[#F97316] to-[#EA580C] hover:shadow-[0_4px_16px_rgba(249,115,22,0.3)] hover:scale-[1.02] transition-all disabled:opacity-50">
+              <button type="submit" disabled={loading} className="w-full py-3.5 rounded-xl font-semibold text-white bg-slate-900 hover:bg-slate-800 hover:shadow-lg hover:shadow-blue-500/10 hover:scale-[1.02] transition-all disabled:opacity-50">
                 {loading ? <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin inline-block"/> : "Verify OTP"}
               </button>
-              <button type="button" onClick={resendOTP} disabled={timer > 0} className={`w-full py-2 text-sm font-medium transition-colors ${timer > 0 ? "text-[#475569] cursor-not-allowed" : "text-[#F97316] hover:underline"}`}>
+              <button type="button" onClick={resendOTP} disabled={timer > 0} className={`w-full py-2 text-sm font-medium transition-colors ${timer > 0 ? "text-slate-400 cursor-not-allowed" : "text-blue-600 hover:underline"}`}>
                 {timer > 0 ? `Resend OTP in ${timer}s` : "Resend OTP 🔄"}
               </button>
             </form>
@@ -136,17 +135,17 @@ export default function ForgotPassword() {
           {stage === "reset" && (
             <form onSubmit={resetPassword} className="space-y-4">
               <div className="relative">
-                <KeyRound size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#475569] pointer-events-none"/>
+                <KeyRound size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"/>
                 <input type="password" required placeholder="New Password" className="inp pl-11 w-full" onChange={(e) => setNewPass(e.target.value)} />
               </div>
-              <button type="submit" disabled={loading} className="w-full py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-[#F97316] to-[#EA580C] hover:shadow-[0_4px_16px_rgba(249,115,22,0.3)] hover:scale-[1.02] transition-all disabled:opacity-50">
+              <button type="submit" disabled={loading} className="w-full py-3.5 rounded-xl font-semibold text-white bg-slate-900 hover:bg-slate-800 hover:shadow-lg hover:shadow-blue-500/10 hover:scale-[1.02] transition-all disabled:opacity-50">
                 {loading ? <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin inline-block"/> : "Update Password"}
               </button>
             </form>
           )}
 
           <div className="mt-6 text-center">
-            <Link to="/login" className="text-sm font-semibold text-[#64748B] hover:text-[#F1F5F9] transition-colors">
+            <Link to="/login" className="text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors">
               ← Back to Login
             </Link>
           </div>

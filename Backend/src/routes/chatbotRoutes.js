@@ -27,7 +27,7 @@ async function groqReply(prompt) {
       {
         model: "llama-3.1-8b-instant",
         messages: [
-          { role: "system", content: "You are an IT Helpdesk Assistant." },
+          { role: "system", content: "You are SAMADHAN AI, a friendly, empathetic, and highly professional IT Helpdesk Assistant. You speak conversationally, like a helpful coworker. Always greet the user warmly, validate their frustration if they are facing an issue, and provide clear, step-by-step guidance. Do not sound robotic. Keep responses concise but genuinely helpful. Use emojis naturally." },
           { role: "user", content: prompt }
         ]
       },
@@ -157,7 +157,7 @@ router.post("/chat", auth, async (req, res) => {
       // 1. Confirming if previous suggestion resolved it
       if (flow.step === "confirm_resolution") {
         if (lowerText === "yes" || lowerText.includes("yes")) {
-          const reply = "Glad I could help! Let me know if you have any other questions. 😊";
+          const reply = "I'm so glad I could help resolve that for you! Let me know if you need absolutely anything else. 😊";
           ticketFlow.delete(userId);
           await saveChat(userId, "bot", reply);
           return res.json({ reply });
@@ -171,11 +171,11 @@ router.post("/chat", auth, async (req, res) => {
             description: details.description 
           });
           
-          const reply = `I'm sorry to hear that. I have drafted a support ticket for you based on our chat:\n\n📌 **Title:** ${details.title}\n📝 **Description:** ${details.description}\n\nReply **YES** to submit this ticket, or **NO** to cancel.`;
+          const reply = `Oh no, I'm really sorry to hear that didn't help. 😔 Let's get our human technicians on this right away! I've drafted a support ticket for you with these details:\n\n📌 **Title:** ${details.title}\n📝 **Description:** ${details.description}\n\nShall I go ahead and submit this for you? (Yes / No / Edit)`;
           await saveChat(userId, "bot", reply);
           return res.json({ reply });
         } else {
-          const reply = "Did the suggestion resolve your issue? Please reply **YES** or **NO**.";
+          const reply = "Hmm, I didn't quite catch that. Did the suggestion resolve your issue? Just let me know (Yes or No).";
           await saveChat(userId, "bot", reply);
           return res.json({ reply });
         }
@@ -191,7 +191,7 @@ router.post("/chat", auth, async (req, res) => {
           description: text 
         });
 
-        const reply = `📝 **Confirm Ticket Details**\n\n📌 **Title:** ${generatedTitle}\n📝 **Description:** ${text}\n\nReply **YES** to submit this ticket, or **NO** to cancel.`;
+        const reply = `📝 **Let's get this sorted out.** Here's a quick summary of the ticket I drafted for you:\n\n📌 **Title:** ${generatedTitle}\n📝 **Description:** ${text}\n\nDoes this look good to submit? (Yes / No / Edit)`;
         await saveChat(userId, "bot", reply);
         return res.json({ reply });
       }
@@ -230,19 +230,39 @@ router.post("/chat", auth, async (req, res) => {
 
           ticketFlow.delete(userId);
 
-          const reply = `✅ Ticket Created & Auto-Assigned!\n\n🎫 **Ticket ID:** ${ticket._id}\n📂 **Category:** ${category}\n🔥 **Priority:** ${priority}\n👨‍🔧 **Technician:** ${technician?.name || "Pending"}\n\n${technician ? "The technician has been notified via email." : ""}`;
+          const reply = `✅ **All set!** Your ticket has been created and assigned to a technician.\n\n🎫 **Ticket ID:** ${ticket._id}\n📂 **Category:** ${category}\n🔥 **Priority:** ${priority}\n👨‍🔧 **Technician:** ${technician?.name || "Pending"}\n\n${technician ? "I've also sent them an email so they can get started on this as soon as possible. Have a great day! 👋" : "We'll get someone on this right away. Have a great day! 👋"}`;
+          await saveChat(userId, "bot", reply);
+          return res.json({ reply });
+        } else if (lowerText === "edit" || lowerText.includes("edit")) {
+          ticketFlow.set(userId, { step: "edit_ticket_title" });
+          const reply = "No problem! Let's write it ourselves. What would you like the ticket TITLE to be? (Keep it short)";
           await saveChat(userId, "bot", reply);
           return res.json({ reply });
         } else if (lowerText === "no" || lowerText.includes("no")) {
           ticketFlow.delete(userId);
-          const reply = "❎ Ticket creation cancelled. Let me know if there's anything else I can help with.";
+          const reply = "❎ No worries at all, I've cancelled the ticket creation. Let me know if there's anything else I can assist you with today!";
           await saveChat(userId, "bot", reply);
           return res.json({ reply });
         } else {
-          const reply = "Please reply **YES** to submit this ticket, or **NO** to cancel.";
+          const reply = "Please reply **YES** to submit, **EDIT** to rewrite it, or **NO** to cancel.";
           await saveChat(userId, "bot", reply);
           return res.json({ reply });
         }
+      }
+
+      // 4. Custom Edit Flow
+      if (flow.step === "edit_ticket_title") {
+        ticketFlow.set(userId, { step: "edit_ticket_desc", title: text });
+        const reply = "Got it! Now, please type the full DESCRIPTION for your issue.";
+        await saveChat(userId, "bot", reply);
+        return res.json({ reply });
+      }
+
+      if (flow.step === "edit_ticket_desc") {
+        ticketFlow.set(userId, { step: "confirm_create", title: flow.title, description: text });
+        const reply = `📝 **Let's review your custom ticket:**\n\n📌 **Title:** ${flow.title}\n📝 **Description:** ${text}\n\nDoes this look good to submit? (Yes / No / Edit)`;
+        await saveChat(userId, "bot", reply);
+        return res.json({ reply });
       }
     }
 
@@ -251,21 +271,16 @@ router.post("/chat", auth, async (req, res) => {
     // -------------------------------------------------------------
     
     // B1: Manual ticket creation trigger
-    if (lowerText.includes("create ticket") || lowerText === "ticket") {
+    if (lowerText.includes("create ticket") || lowerText === "ticket" || lowerText.includes("support ticket")) {
       ticketFlow.set(userId, { step: "describe_manual" });
-      const reply = "Let's create a support ticket. Please describe the problem you are experiencing in detail:";
+      const reply = "I'd be happy to help you create a ticket! Could you please describe the issue you're facing in a bit of detail?";
       await saveChat(userId, "bot", reply);
       return res.json({ reply });
     }
 
     // B2: Password reset request
     if (lowerText.includes("reset") && lowerText.includes("password")) {
-      const reply = `✅ Hi! I will help you step by step.
-
-📄 Open the official Password Reset Manual:
-👉 http://localhost:5173/Password%20Reset%20Manual.pdf
-
-Did this manual resolve your issue? Reply **YES** or **NO** (if NO, we will create a support ticket).`;
+      const reply = `✅ Hi there! I can definitely help you with resetting your password.\n\n📄 Could you please check out our official Password Reset Manual here?\n👉 http://localhost:5173/Password%20Reset%20Manual.pdf\n\nDid the steps in that guide help you get back in? (Yes/No)`;
       
       ticketFlow.set(userId, { 
         step: "confirm_resolution", 
@@ -280,16 +295,7 @@ Did this manual resolve your issue? Reply **YES** or **NO** (if NO, we will crea
     // B3: Search Knowledge Base
     const kbMatch = matchFromKB(text);
     if (kbMatch) {
-      const reply = `💡 **Suggested Solution Found**
-
-📌 **Issue:** ${kbMatch.question}
-📂 **Category:** ${kbMatch.category}
-🔥 **Suggested Priority:** ${kbMatch.suggested_priority}
-
-✅ **Solution:**
-${kbMatch.answer}
-
-Did this resolve your issue? Reply **YES** or **NO** (if NO, we will create a support ticket).`;
+      const reply = `💡 **I think I found a solution that might help!**\n\n📌 **Issue:** ${kbMatch.question}\n📂 **Category:** ${kbMatch.category}\n\n✅ **Here's what you can try:**\n${kbMatch.answer}\n\nDid that do the trick? (Yes/No)`;
 
       ticketFlow.set(userId, {
         step: "confirm_resolution",
@@ -304,7 +310,7 @@ Did this resolve your issue? Reply **YES** or **NO** (if NO, we will create a su
 
     // B4: AI Fallback (Groq)
     const aiReply = await groqReply(text);
-    const reply = `${aiReply}\n\nDid this resolve your issue? Reply **YES** or **NO** (if NO, we can create a support ticket for you).`;
+    const reply = `${aiReply}\n\nDid this help resolve your issue? Let me know (Yes/No)! If not, I can easily create a support ticket for our technicians to look into.`;
 
     ticketFlow.set(userId, {
       step: "confirm_resolution",

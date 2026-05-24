@@ -13,7 +13,6 @@ router.post("/contact", async (req, res) => {
       return res.status(400).json({ msg: "All fields are required" });
     }
 
-    // Nodemailer Transporter
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -21,8 +20,6 @@ router.post("/contact", async (req, res) => {
         pass: process.env.EMAIL_PASS,  // App Password (IMPORTANT)
       },
     });
-
-    // Email options
     await transporter.sendMail({
       from: `"SetuHub Contact" <${process.env.EMAIL}>`,
       to: process.env.EMAIL,

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, LogIn, Ticket, Zap, Shield, CheckCircle2, Cpu } from "lucide-react";
+import { Mail, Lock, LogIn, Zap, Shield, CheckCircle2, Cpu } from "lucide-react";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -41,23 +41,23 @@ export default function Login() {
   ];
 
   return (
-    <div className="min-h-screen flex bg-[#0A0A0F] text-[#F1F5F9]">
+    <div className="min-h-screen flex bg-white text-slate-900">
 
       {/* ── Left Panel ── */}
-      <div className="hidden lg:flex flex-col items-center justify-center flex-1 px-16 relative overflow-hidden bg-[#0F0F17] border-r border-[#F97316]/10">
-        <div className="absolute top-0 left-0 w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(249,115,22,0.12)_0%,transparent_70%)] pointer-events-none"/>
-        <div className="absolute bottom-0 right-0 w-[300px] h-[300px] rounded-full bg-[radial-gradient(circle,rgba(34,197,94,0.08)_0%,transparent_70%)] pointer-events-none"/>
+      <div className="hidden lg:flex flex-col items-center justify-center flex-1 px-16 relative overflow-hidden bg-slate-50 border-r border-slate-200">
+        <div className="absolute top-0 left-0 w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.08)_0%,transparent_70%)] pointer-events-none"/>
+        <div className="absolute bottom-0 right-0 w-[300px] h-[300px] rounded-full bg-[radial-gradient(circle,rgba(99,102,241,0.06)_0%,transparent_70%)] pointer-events-none"/>
 
         <div className="relative z-10 max-w-sm text-center">
 
-          <h1 className="text-4xl font-black bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent mb-3 tracking-tight">SAMADHAN</h1>
-          <p className="text-[#64748B] text-sm leading-relaxed mb-10">Smart AI-powered helpdesk for modern IT teams</p>
+          <h1 className="text-4xl font-display font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent mb-3 tracking-tight">SAMADHAN</h1>
+          <p className="text-slate-500 text-sm leading-relaxed mb-10">Smart AI-powered helpdesk for modern IT teams</p>
 
           <div className="space-y-3 text-left">
             {features.map((f, i) => (
               <div key={i} className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-[#F97316]/10 border border-[#F97316]/20 flex items-center justify-center text-[#F97316] shrink-0">{f.icon}</div>
-                <span className="text-sm text-[#CBD5E1] font-medium">{f.text}</span>
+                <div className="w-8 h-8 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shrink-0">{f.icon}</div>
+                <span className="text-sm text-slate-700 font-medium">{f.text}</span>
               </div>
             ))}
           </div>
@@ -65,63 +65,62 @@ export default function Login() {
       </div>
 
       {/* ── Right Panel ── */}
-      <div className="flex-1 flex items-center justify-center px-6 py-12 relative">
+      <div className="flex-1 flex items-center justify-center px-6 py-12 relative bg-[#fcfcfd]">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(249,115,22,0.04)_0%,transparent_70%)]"/>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.04)_0%,transparent_70%)]"/>
         </div>
 
         <div className="w-full max-w-[400px] animate-fadeUp">
           {/* Mobile logo */}
           <div className="flex items-center gap-3 mb-8 lg:hidden">
-
-            <span className="text-xl font-black bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent">SAMADHAN</span>
+            <span className="text-xl font-display font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">SAMADHAN</span>
           </div>
 
-          <h2 className="text-3xl font-black text-[#F1F5F9] mb-2">Welcome back</h2>
-          <p className="text-[#64748B] text-sm mb-8">Sign in to your SAMADHAN account</p>
+          <h2 className="text-3xl font-semibold text-slate-900 mb-2">Welcome back</h2>
+          <p className="text-slate-500 text-sm mb-8">Sign in to your SAMADHAN account</p>
 
           {/* Message */}
           {msg.text && (
-            <div className={`mb-5 px-4 py-3 rounded-xl text-sm font-medium animate-fadeIn border ${msg.ok ? "bg-[#22C55E]/10 text-[#4ADE80] border-[#22C55E]/25" : "bg-[#EF4444]/10 text-[#FCA5A5] border-[#EF4444]/25"}`}>
+            <div className={`mb-5 px-4 py-3 rounded-xl text-sm font-medium animate-fadeIn border ${msg.ok ? "bg-green-50 text-green-700 border-green-200" : "bg-red-50 text-red-700 border-red-200"}`}>
               {msg.text}
             </div>
           )}
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="relative">
-              <Mail size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#475569] pointer-events-none"/>
+              <Mail size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"/>
               <input type="email" required placeholder="Email address" value={form.email}
                 onChange={e => setForm({...form, email: e.target.value})}
                 className="inp !pl-11 w-full" />
             </div>
             <div className="relative">
-              <Lock size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#475569] pointer-events-none"/>
+              <Lock size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"/>
               <input type="password" required placeholder="Password" value={form.password}
                 onChange={e => setForm({...form, password: e.target.value})}
                 className="inp !pl-11 w-full" />
             </div>
 
             <div className="flex justify-end">
-              <a href="/forgot-password" className="text-xs text-[#F97316] hover:underline font-medium">Forgot password?</a>
+              <a href="/forgot-password" className="text-xs text-blue-600 hover:underline font-medium">Forgot password?</a>
             </div>
 
             <button type="submit" disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-[#F97316] to-[#EA580C] hover:shadow-lg hover:shadow-[#F97316]/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed mt-2">
+              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-white bg-slate-900 hover:bg-slate-800 hover:shadow-lg hover:shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed mt-2">
               {loading
                 ? <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"/>
                 : <><LogIn size={17}/> Sign In</>}
             </button>
           </form>
 
-          <p className="text-center text-sm text-[#475569] mt-6">
+          <p className="text-center text-sm text-slate-500 mt-6">
             Don't have an account?{" "}
-            <Link to="/signup" className="text-[#F97316] font-semibold hover:underline">Sign up free →</Link>
+            <Link to="/signup" className="text-blue-600 font-semibold hover:underline">Sign up free →</Link>
           </p>
 
           <div className="flex items-center gap-3 mt-10">
-            <div className="flex-1 h-px bg-[#1E293B]"/>
-            <span className="text-[#334155] text-xs font-medium">SAMADHAN v2.0</span>
-            <div className="flex-1 h-px bg-[#1E293B]"/>
+            <div className="flex-1 h-px bg-slate-200"/>
+            <span className="text-slate-400 text-xs font-medium">SAMADHAN v2.0</span>
+            <div className="flex-1 h-px bg-slate-200"/>
           </div>
         </div>
       </div>

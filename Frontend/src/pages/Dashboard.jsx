@@ -1,6 +1,6 @@
 import LogoutButton from "../components/LogoutButton";
 import Chatbot from "../components/Chatbot";
-import { LayoutDashboard, Ticket, PlusCircle, UserRound, CheckCircle2, Clock3, FilePlus2, Loader2, X } from "lucide-react";
+import { LayoutDashboard, Inbox, PlusCircle, UserRound, BadgeCheck, Hourglass, FilePlus2, Loader2, X, Ticket } from "lucide-react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -42,21 +42,20 @@ export default function Dashboard() {
   const pending = tickets.filter(t => ["Pending","In Progress","Open"].includes(t.status)).length;
 
   return (
-    <div className="flex min-h-screen bg-[#0A0A0F] text-[#F1F5F9]">
+    <div className="flex h-screen overflow-hidden bg-[#fcfcfd] text-slate-900">
 
       {/* Ambient glows */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(249,115,22,0.07)_0%,transparent_70%)]"/>
-        <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(34,197,94,0.05)_0%,transparent_70%)]"/>
+        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.05)_0%,transparent_70%)]"/>
+        <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(99,102,241,0.04)_0%,transparent_70%)]"/>
       </div>
 
       {/* ═══ SIDEBAR ═══ */}
-      <aside className="relative z-20 w-64 flex-shrink-0 flex flex-col justify-between p-5 bg-[#0F0F17] border-r border-[#F97316]/10">
+      <aside className="relative z-20 w-64 flex-shrink-0 flex flex-col justify-between p-5 bg-slate-50 border-r border-slate-200">
         <div>
           {/* Logo */}
           <div className="flex items-center gap-3 px-2 mb-9">
-
-            <span className="text-lg font-black bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent">SAMADHAN</span>
+            <span className="text-2xl font-display font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent tracking-tight">SAMADHAN</span>
           </div>
 
           <nav className="flex flex-col gap-1">
@@ -74,12 +73,12 @@ export default function Dashboard() {
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-black bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent mb-1">
+          <h1 className="text-3xl font-display font-semibold text-slate-900 mb-1">
             {activePage==="dashboard" && `Welcome back, ${name}`}
             {activePage==="tickets" && "My Tickets"}
             {activePage==="profile" && "My Profile"}
           </h1>
-          <p className="text-[#475569] text-sm">
+          <p className="text-slate-500 text-sm">
             {activePage==="dashboard" && "Here's your support activity overview"}
             {activePage==="tickets" && "Track all your submitted support tickets"}
             {activePage==="profile" && "Your account details"}
@@ -91,37 +90,37 @@ export default function Dashboard() {
           <div className="animate-fadeUp">
             {/* Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
-              <StatCard label="Total Tickets" value={total}   icon={<Ticket size={22}/>}       bg="rgba(249,115,22,0.1)" border="rgba(249,115,22,0.2)"  ibg="linear-gradient(135deg,#F97316,#EA580C)" ishadow="rgba(249,115,22,0.35)"/>
-              <StatCard label="Resolved"      value={resolved} icon={<CheckCircle2 size={22}/>} bg="rgba(34,197,94,0.08)"  border="rgba(34,197,94,0.18)"  ibg="linear-gradient(135deg,#22C55E,#16A34A)" ishadow="rgba(34,197,94,0.3)"/>
-              <StatCard label="Pending"       value={pending}  icon={<Clock3 size={22}/>}        bg="rgba(245,158,11,0.08)" border="rgba(245,158,11,0.18)" ibg="linear-gradient(135deg,#F59E0B,#D97706)" ishadow="rgba(245,158,11,0.3)"/>
+              <StatCard label="Total Tickets" value={total}   icon={<Inbox size={26} strokeWidth={1.5}/>}       colorClass="bg-blue-50 text-blue-600 border border-blue-100 shadow-inner"/>
+              <StatCard label="Resolved"      value={resolved} icon={<BadgeCheck size={26} strokeWidth={1.5}/>} colorClass="bg-green-50 text-green-600 border border-green-100 shadow-inner"/>
+              <StatCard label="Pending"       value={pending}  icon={<Hourglass size={26} strokeWidth={1.5}/>}   colorClass="bg-orange-50 text-orange-600 border border-orange-100 shadow-inner"/>
             </div>
 
             {/* Recent Tickets Table */}
-            <div className="bg-[#16161E] border border-white/5 rounded-2xl p-7">
-              <h3 className="text-lg font-bold mb-5 flex items-center gap-2.5 bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent">
-                <Ticket size={18} color="#F97316"/> Recent Tickets
+            <div className="bg-white border border-slate-200 rounded-2xl p-7 shadow-sm">
+              <h3 className="text-lg font-semibold mb-5 flex items-center gap-2.5 text-slate-900">
+                <Ticket size={18} className="text-blue-600"/> Recent Tickets
               </h3>
               {loading ? (
-                <div className="flex justify-center py-12"><Loader2 size={28} color="#F97316" className="animate-spin"/></div>
+                <div className="flex justify-center py-12"><Loader2 size={28} className="text-blue-600 animate-spin"/></div>
               ) : tickets.length===0 ? (
-                <p className="text-[#475569] text-center py-10">No tickets yet. Create your first ticket!</p>
+                <p className="text-slate-500 text-center py-10">No tickets yet. Create your first ticket!</p>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-white/5">
+                      <tr className="border-b border-slate-100">
                         {["Title","Status","Priority","Created"].map((h,i)=>(
-                          <th key={h} className={`pb-3 text-xs font-semibold uppercase tracking-wide text-[#475569] ${i===3?"text-right":""}`}>{h}</th>
+                          <th key={h} className={`pb-3 text-xs font-semibold uppercase tracking-wide text-slate-500 ${i===3?"text-right":"text-left"}`}>{h}</th>
                         ))}
                       </tr>
                     </thead>
                     <tbody>
                       {tickets.slice(0,6).map(t=>(
-                        <tr key={t._id} className="border-b border-white/[0.04] hover:bg-[#F97316]/[0.03] transition-colors">
-                          <td className="py-3.5 pr-4 font-medium text-[#E2E8F0]">{t.title}</td>
+                        <tr key={t._id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                          <td className="py-3.5 pr-4 font-medium text-slate-800">{t.title}</td>
                           <td className="py-3.5 pr-4"><StatusBadge s={t.status}/></td>
                           <td className="py-3.5 pr-4"><PriorityBadge p={t.priority}/></td>
-                          <td className="py-3.5 text-right font-mono text-xs text-[#475569]">{new Date(t.createdAt).toLocaleDateString()}</td>
+                          <td className="py-3.5 text-right font-mono text-xs text-slate-500">{new Date(t.createdAt).toLocaleDateString()}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -136,9 +135,9 @@ export default function Dashboard() {
         {activePage==="tickets" && (
           <div className="flex flex-col gap-4 animate-fadeUp">
             {tickets.length===0 ? (
-              <div className="bg-[#16161E] border border-white/5 rounded-2xl p-16 text-center">
-                <Ticket size={48} color="#334155" className="mx-auto mb-4"/>
-                <p className="text-[#475569]">No tickets yet. Create your first one!</p>
+              <div className="bg-white border border-slate-200 rounded-2xl p-16 text-center shadow-sm">
+                <Ticket size={48} className="text-slate-300 mx-auto mb-4"/>
+                <p className="text-slate-500">No tickets yet. Create your first one!</p>
               </div>
             ) : tickets.map((t,i)=><TicketCard key={t._id} t={t} i={i}/>)}
           </div>
@@ -146,14 +145,14 @@ export default function Dashboard() {
 
         {/* ── PROFILE PAGE ── */}
         {activePage==="profile" && (
-          <div className="bg-[#16161E] border border-white/5 rounded-2xl p-9 max-w-lg animate-fadeUp">
-            <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-[#F97316] to-[#EA580C] flex items-center justify-center text-2xl font-black text-white mb-7 shadow-[0_6px_24px_rgba(249,115,22,0.35)]">
+          <div className="bg-white border border-slate-200 rounded-2xl p-9 max-w-lg animate-fadeUp shadow-sm">
+            <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-2xl font-semibold text-white mb-7 shadow-md">
               {name.charAt(0).toUpperCase()}
             </div>
             {[["Name",name],["Email",email],["Role",role.charAt(0).toUpperCase()+role.slice(1)]].map(([l,v])=>(
-              <div key={l} className="flex justify-between items-center py-3.5 border-b border-white/[0.06] last:border-0">
-                <span className="text-sm text-[#475569]">{l}</span>
-                <span className="text-sm font-semibold text-[#E2E8F0]">{v}</span>
+              <div key={l} className="flex justify-between items-center py-3.5 border-b border-slate-100 last:border-0">
+                <span className="text-sm text-slate-500">{l}</span>
+                <span className="text-sm font-semibold text-slate-800">{v}</span>
               </div>
             ))}
           </div>
@@ -162,14 +161,14 @@ export default function Dashboard() {
 
       {/* ═══ CREATE TICKET MODAL ═══ */}
       {showForm && (
-        <div className="fixed inset-0 bg-black/65 backdrop-blur-sm flex items-center justify-center z-50 animate-fadeIn">
-          <div className="w-[440px] bg-[#16161E] border border-[#F97316]/15 rounded-2xl p-8 shadow-[0_24px_64px_rgba(0,0,0,0.6)] animate-scaleIn">
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 animate-fadeIn">
+          <div className="w-[440px] bg-white border border-slate-200 rounded-2xl p-8 shadow-2xl animate-scaleIn">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-bold flex items-center gap-2 bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent">
-                <FilePlus2 size={19} color="#F97316"/> Create New Ticket
+              <h2 className="text-lg font-semibold flex items-center gap-2 text-slate-900">
+                <FilePlus2 size={19} className="text-blue-600"/> Create New Ticket
               </h2>
-              <button onClick={()=>setShowForm(false)} className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
-                <X size={15} color="#475569"/>
+              <button onClick={()=>setShowForm(false)} className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors">
+                <X size={15} className="text-slate-500"/>
               </button>
             </div>
             <form onSubmit={createTicket} className="space-y-4">
@@ -179,8 +178,8 @@ export default function Dashboard() {
                 <option>High</option><option>Medium</option><option>Low</option>
               </select>
               <div className="flex gap-3 pt-1">
-                <button type="submit" className="flex-1 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-[#F97316] to-[#EA580C] hover:shadow-lg hover:shadow-[#F97316]/25 hover:scale-[1.02] transition-all">Submit</button>
-                <button type="button" onClick={()=>setShowForm(false)} className="flex-1 py-3 rounded-xl font-medium text-[#94A3B8] border border-white/10 bg-white/5 hover:bg-white/10 transition-all">Cancel</button>
+                <button type="submit" className="flex-1 py-3 rounded-xl font-semibold text-white bg-slate-900 hover:bg-slate-800 transition-all">Submit</button>
+                <button type="button" onClick={()=>setShowForm(false)} className="flex-1 py-3 rounded-xl font-medium text-slate-600 border border-slate-200 bg-white hover:bg-slate-50 transition-all">Cancel</button>
               </div>
             </form>
           </div>
@@ -195,20 +194,22 @@ export default function Dashboard() {
 function SLink({icon,label,active,onClick}) {
   return (
     <div onClick={onClick}
-      className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer text-sm font-medium transition-all duration-200 ${active ? "bg-gradient-to-r from-[#F97316] to-[#EA580C] text-white shadow-[0_4px_16px_rgba(249,115,22,0.35)]" : "text-[#475569] hover:bg-[#F97316]/8 hover:text-[#F97316]"}`}>
+      className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer text-sm font-medium transition-all duration-200 ${active ? "bg-slate-900 text-white shadow-md" : "text-slate-500 hover:bg-slate-50 hover:text-slate-900 border border-transparent"}`}>
       {icon}<span>{label}</span>
     </div>
   );
 }
 
-function StatCard({label,value,icon,bg,border,ibg,ishadow}) {
+function StatCard({label,value,icon,colorClass}) {
   return (
-    <div className="p-6 rounded-2xl hover:-translate-y-1 transition-all duration-300 cursor-default" style={{background:bg,border:`1px solid ${border}`}}>
-      <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-white" style={{background:ibg,boxShadow:`0 4px 16px ${ishadow}`}}>{icon}</div>
+    <div className="p-6 rounded-3xl bg-white border border-slate-200 hover:shadow-lg hover:border-slate-300 transition-all duration-300 cursor-default group">
+      <div className="flex items-center gap-5">
+        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 ${colorClass}`}>
+          {icon}
+        </div>
         <div>
-          <p className="text-xs font-semibold text-[#475569] uppercase tracking-wide mb-1">{label}</p>
-          <h2 className="text-3xl font-black text-[#F1F5F9]">{value}</h2>
+          <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">{label}</p>
+          <h2 className="text-3xl font-black text-slate-800 tracking-tight">{value}</h2>
         </div>
       </div>
     </div>
@@ -216,35 +217,49 @@ function StatCard({label,value,icon,bg,border,ibg,ishadow}) {
 }
 
 function StatusBadge({s}) {
-  const c = {Resolved:"bg-[#22C55E]/12 text-[#4ADE80] border-[#22C55E]/25",Pending:"bg-[#F59E0B]/12 text-[#FCD34D] border-[#F59E0B]/25","In Progress":"bg-[#3B82F6]/12 text-[#93C5FD] border-[#3B82F6]/25",Open:"bg-[#F97316]/12 text-[#FDBA74] border-[#F97316]/25"};
+  const c = {Resolved:"bg-green-50 text-green-700 border-green-200",Pending:"bg-amber-50 text-amber-700 border-amber-200","In Progress":"bg-blue-50 text-blue-700 border-blue-200",Open:"bg-slate-100 text-slate-700 border-slate-200"};
   return <span className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-semibold border ${c[s]||c.Open}`}>{s}</span>;
 }
 
 function PriorityBadge({p}) {
-  const c = {High:"bg-[#EF4444]/12 text-[#FCA5A5] border-[#EF4444]/25",Medium:"bg-[#F97316]/12 text-[#FDBA74] border-[#F97316]/25",Low:"bg-[#9CA3AF]/12 text-[#D1D5DB] border-[#9CA3AF]/25"};
+  const c = {High:"bg-red-50 text-red-700 border-red-200",Medium:"bg-orange-50 text-orange-700 border-orange-200",Low:"bg-slate-100 text-slate-500 border-slate-200"};
   return <span className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-semibold border ${c[p]||c.Low}`}>{p}</span>;
 }
 
 function TicketCard({t,i}) {
   return (
-    <div className="bg-[#16161E] border border-white/5 rounded-xl p-6 hover:-translate-y-0.5 hover:border-[#F97316]/15 transition-all duration-200 animate-fadeUp" style={{animationDelay:`${i*0.05}s`}}>
-      <div className="flex flex-wrap justify-between items-start gap-3 mb-3">
-        <h3 className="font-bold text-[#E2E8F0]">{t.title}</h3>
+    <div className="group bg-white border border-slate-200 rounded-xl p-6 hover:shadow-md transition-all duration-300 animate-fadeUp relative" style={{animationDelay:`${i*0.05}s`}}>
+      
+      {/* ALWAYS VISIBLE */}
+      <div className="flex flex-wrap justify-between items-center gap-3 relative z-10 bg-white">
+        <div className="flex-1">
+          <h3 className="font-semibold text-slate-900 text-lg mb-1.5">{t.title}</h3>
+          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500">
+            <span><b className="text-slate-700">Created:</b> {new Date(t.createdAt).toLocaleDateString()}</span>
+            <span><b className="text-slate-700">Solved By:</b> {t.assignedTo?.name || "Unassigned"}</span>
+          </div>
+        </div>
         <StatusBadge s={t.status}/>
       </div>
-      <p className="text-sm text-[#475569] mb-4 leading-relaxed">{t.description}</p>
-      <div className="flex flex-wrap gap-4 text-xs p-3 rounded-lg bg-white/[0.025] border border-white/[0.04]">
-        <span className="text-[#94A3B8]"><b className="text-[#F97316]">Priority: </b><PriorityBadge p={t.priority}/></span>
-        <span className="text-[#94A3B8]"><b className="text-[#F97316]">ID: </b>{t._id?.slice(-8)}</span>
-        <span className="text-[#94A3B8]"><b className="text-[#F97316]">Assigned: </b>{t.assignedTo?.name||"Unassigned"}</span>
-        <span className="text-[#94A3B8] font-mono"><b className="text-[#F97316]">Created: </b>{new Date(t.createdAt).toLocaleDateString()}</span>
-      </div>
-      {t.status==="Resolved"&&t.solutionComment&&(
-        <div className="mt-4 p-4 rounded-xl bg-[#22C55E]/8 border border-[#22C55E]/20">
-          <p className="text-xs font-bold text-[#22C55E] mb-1.5">✅ Solution from Technician:</p>
-          <p className="text-sm text-[#86EFAC] leading-relaxed">{t.solutionComment}</p>
+
+      {/* EXPAND ON HOVER */}
+      <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-300 ease-in-out">
+        <div className="overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+          <div className="pt-5 mt-5 border-t border-slate-100">
+            <p className="text-sm text-slate-600 mb-4 leading-relaxed">{t.description}</p>
+            <div className="flex flex-wrap gap-4 text-xs p-3 rounded-lg bg-slate-50 border border-slate-100">
+              <span className="text-slate-500"><b className="text-slate-700">Priority: </b><PriorityBadge p={t.priority}/></span>
+              <span className="text-slate-500"><b className="text-slate-700">ID: </b>{t._id?.slice(-8)}</span>
+            </div>
+            {t.status==="Resolved" && t.solutionComment && (
+              <div className="mt-4 p-4 rounded-xl bg-green-50 border border-green-200">
+                <p className="text-xs font-semibold text-green-800 mb-1.5">✅ Solution from Technician:</p>
+                <p className="text-sm text-green-700 leading-relaxed">{t.solutionComment}</p>
+              </div>
+            )}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

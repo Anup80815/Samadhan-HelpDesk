@@ -1,5 +1,5 @@
 import LogoutButton from "../components/LogoutButton";
-import { LayoutDashboard, UsersRound, Wrench, CheckCircle2, Clock3, Ticket, Loader2 } from "lucide-react";
+import { LayoutDashboard, UsersRound, Wrench, ShieldCheck, BadgeCheck, Hourglass, Ticket, Loader2 } from "lucide-react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -81,20 +81,19 @@ export default function AdminDashboard() {
   const adminName = localStorage.getItem("name") || "Admin";
 
   return (
-    <div className="flex min-h-screen bg-[#0A0A0F] text-[#F1F5F9] relative overflow-hidden">
+    <div className="flex h-screen overflow-hidden bg-[#fcfcfd] text-slate-900 relative">
       
       {/* Glows */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(249,115,22,0.06)_0%,transparent_70%)]"/>
-        <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(34,197,94,0.04)_0%,transparent_70%)]"/>
+        <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.06)_0%,transparent_70%)]"/>
+        <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(99,102,241,0.04)_0%,transparent_70%)]"/>
       </div>
 
       {/* SIDEBAR */}
-      <aside className="relative z-20 w-64 flex-shrink-0 flex flex-col justify-between p-5 bg-[#0F0F17] border-r border-[#F97316]/10">
+      <aside className="relative z-20 w-64 flex-shrink-0 flex flex-col justify-between p-5 bg-white border-r border-slate-200">
         <div>
           <div className="flex items-center gap-3 px-2 mb-9">
-
-            <span className="text-lg font-black bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent">Admin Panel</span>
+            <span className="text-2xl font-display font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent tracking-tight">Admin Panel</span>
           </div>
 
           <nav className="flex flex-col gap-1">
@@ -113,21 +112,21 @@ export default function AdminDashboard() {
         {/* HEADER */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-10">
           <div>
-            <h1 className="text-3xl font-black bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent mb-1">
+            <h1 className="text-3xl font-display font-semibold text-slate-900 mb-1">
               Welcome, {adminName}
             </h1>
-            <p className="text-[#475569] text-sm">System administration and overview</p>
+            <p className="text-slate-500 text-sm">System administration and overview</p>
           </div>
 
           <button onClick={() => setShowCreateModal(true)}
-            className="px-5 py-2.5 rounded-xl font-bold text-white bg-gradient-to-r from-[#F97316] to-[#EA580C] hover:shadow-[0_4px_16px_rgba(249,115,22,0.35)] hover:scale-105 active:scale-95 transition-all">
+            className="px-5 py-2.5 rounded-xl font-semibold text-white bg-slate-900 hover:bg-slate-800 hover:shadow-lg hover:shadow-slate-500/10 hover:scale-[1.02] active:scale-[0.98] transition-all">
             + Create User
           </button>
         </div>
 
         {/* TABS */}
         <div className="animate-fadeUp">
-          {activeTab === "overview" && <Overview users={users} technicians={technicians} tickets={tickets} loadingTickets={loadingTickets} />}
+          {activeTab === "overview" && <Overview users={users} technicians={technicians} tickets={tickets} />}
           {activeTab === "users" && <DataTable title="Users" loading={loadingUsers} data={users} deleteUser={deleteUser} />}
           {activeTab === "technicians" && <DataTable title="Technicians" loading={loadingUsers} data={technicians} />}
           {activeTab === "tickets" && (
@@ -147,38 +146,35 @@ function SidebarItem({ icon, label, active, onClick }) {
   return (
     <div onClick={onClick}
       className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer text-sm font-medium transition-all duration-200 
-      ${active ? "bg-gradient-to-r from-[#F97316] to-[#EA580C] text-white shadow-[0_4px_16px_rgba(249,115,22,0.35)]" : "text-[#475569] hover:bg-[#F97316]/10 hover:text-[#F97316]"}`}>
+      ${active ? "bg-slate-900 text-white shadow-md" : "text-slate-500 hover:bg-slate-50 hover:text-slate-900 border border-transparent"}`}>
       {icon} {label}
     </div>
   );
 }
 
-function Overview({ users, technicians, tickets, loadingTickets }) {
+function Overview({ users, technicians, tickets }) {
   return (
-    <>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-        <AdminCard title="Total Users" value={users.length} icon={<UsersRound size={22}/>} bg="rgba(249,115,22,0.08)" border="rgba(249,115,22,0.2)" ibg="linear-gradient(135deg,#F97316,#EA580C)"/>
-        <AdminCard title="Technicians" value={technicians.length} icon={<Wrench size={22}/>} bg="rgba(249,115,22,0.08)" border="rgba(249,115,22,0.2)" ibg="linear-gradient(135deg,#F97316,#EA580C)"/>
-        <AdminCard title="Pending Tickets" value={tickets.filter(t => t.status !== "Resolved").length} icon={<Clock3 size={22}/>} bg="rgba(245,158,11,0.08)" border="rgba(245,158,11,0.2)" ibg="linear-gradient(135deg,#F59E0B,#D97706)"/>
-        <AdminCard title="Resolved Tickets" value={tickets.filter(t => t.status === "Resolved").length} icon={<CheckCircle2 size={22}/>} bg="rgba(34,197,94,0.08)" border="rgba(34,197,94,0.2)" ibg="linear-gradient(135deg,#22C55E,#16A34A)"/>
-      </div>
-
-      <div className="bg-[#16161E] border border-white/5 rounded-2xl p-7">
-        <h3 className="text-lg font-bold mb-5 flex items-center gap-2.5 bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent">
-          <Ticket size={18} color="#F97316"/> Recent Tickets
-        </h3>
-        {loadingTickets ? <div className="flex justify-center py-8"><Loader2 className="animate-spin text-[#F97316]"/></div> : tickets.length === 0 ? <p className="text-[#475569]">No tickets.</p> : <Table data={tickets.slice(0, 5)} />}
-      </div>
-    </>
+    <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-8">
+      <AdminCard title="Total Users" value={users.length} icon={<UsersRound size={24} strokeWidth={1.5}/>} colorClass="bg-blue-50 text-blue-600 border border-blue-100 shadow-inner"/>
+      <AdminCard title="Admins" value={users.filter(u=>u.role==="admin").length} icon={<ShieldCheck size={24} strokeWidth={1.5}/>} colorClass="bg-purple-50 text-purple-600 border border-purple-100 shadow-inner"/>
+      <AdminCard title="Technicians" value={technicians.length} icon={<Wrench size={24} strokeWidth={1.5}/>} colorClass="bg-indigo-50 text-indigo-600 border border-indigo-100 shadow-inner"/>
+      <AdminCard title="Pending" value={tickets.filter(t => t.status !== "Resolved").length} icon={<Hourglass size={24} strokeWidth={1.5}/>} colorClass="bg-orange-50 text-orange-600 border border-orange-100 shadow-inner"/>
+      <AdminCard title="Resolved" value={tickets.filter(t => t.status === "Resolved").length} icon={<BadgeCheck size={24} strokeWidth={1.5}/>} colorClass="bg-green-50 text-green-600 border border-green-100 shadow-inner"/>
+    </div>
   );
 }
 
-function AdminCard({ title, value, icon, bg, border, ibg }) {
+function AdminCard({ title, value, icon, colorClass }) {
   return (
-    <div className="p-6 rounded-2xl transition-all" style={{background:bg, border:`1px solid ${border}`}}>
+    <div className="p-5 rounded-3xl bg-white border border-slate-200 hover:shadow-lg hover:border-slate-300 transition-all duration-300 cursor-default group">
       <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white" style={{background:ibg}}>{icon}</div>
-        <div><p className="text-xs font-semibold text-[#475569] uppercase tracking-wide mb-1">{title}</p><h2 className="text-3xl font-black text-[#F1F5F9]">{value}</h2></div>
+        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 ${colorClass}`}>
+          {icon}
+        </div>
+        <div>
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{title}</p>
+          <h2 className="text-2xl font-black text-slate-800 tracking-tight">{value}</h2>
+        </div>
       </div>
     </div>
   );
@@ -186,29 +182,29 @@ function AdminCard({ title, value, icon, bg, border, ibg }) {
 
 function DataTable({ title, loading, data, deleteUser }) {
   return (
-    <div className="bg-[#16161E] border border-white/5 rounded-2xl p-7">
-      <h2 className="text-lg font-bold mb-6 bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent">{title}</h2>
-      {loading ? <div className="flex justify-center py-8"><Loader2 className="animate-spin text-[#F97316]"/></div> : data.length === 0 ? <p className="text-[#475569]">No data.</p> : (
+    <div className="bg-white border border-slate-200 rounded-2xl p-7 shadow-sm">
+      <h2 className="text-lg font-semibold mb-6 text-slate-900">{title}</h2>
+      {loading ? <div className="flex justify-center py-8"><Loader2 className="animate-spin text-blue-600"/></div> : data.length === 0 ? <p className="text-slate-500">No data.</p> : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/10 text-[#475569] uppercase text-xs">
-                <th className="px-4 py-3 text-left">Name</th>
-                <th className="px-4 py-3 text-left">Email</th>
-                <th className="px-4 py-3 text-left">Role</th>
-                {deleteUser && <th className="px-4 py-3 text-right">Actions</th>}
+              <tr className="border-b border-slate-100 text-slate-500 uppercase text-xs font-semibold">
+                <th className="px-4 py-3 text-left tracking-wide">Name</th>
+                <th className="px-4 py-3 text-left tracking-wide">Email</th>
+                <th className="px-4 py-3 text-left tracking-wide">Role</th>
+                {deleteUser && <th className="px-4 py-3 text-right tracking-wide">Actions</th>}
               </tr>
             </thead>
             <tbody>
               {data.map((u) => (
-                <tr key={u._id} className="border-b border-white/[0.04] hover:bg-[#F97316]/[0.03]">
-                  <td className="px-4 py-3 text-[#E2E8F0]">{u.name}</td>
-                  <td className="px-4 py-3 text-[#94A3B8]">{u.email}</td>
+                <tr key={u._id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                  <td className="px-4 py-3 font-medium text-slate-800">{u.name}</td>
+                  <td className="px-4 py-3 text-slate-600">{u.email}</td>
                   <td className="px-4 py-3"><RoleBadge role={u.role}/></td>
                   {deleteUser && (
                     <td className="px-4 py-3 text-right">
                       {u.role !== "admin" && u.role !== "headadmin" && (
-                        <button onClick={() => deleteUser(u._id)} className="px-3 py-1.5 text-xs font-medium bg-[#EF4444]/10 text-[#EF4444] rounded-lg hover:bg-[#EF4444]/20 transition-colors">Delete</button>
+                        <button onClick={() => deleteUser(u._id)} className="px-3 py-1.5 text-xs font-medium bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors">Delete</button>
                       )}
                     </td>
                   )}
@@ -224,26 +220,26 @@ function DataTable({ title, loading, data, deleteUser }) {
 
 function TicketsTable({ title, loading, data, technicians, assignTicketManually, assignLoading }) {
   return (
-    <div className="bg-[#16161E] border border-white/5 rounded-2xl p-7">
-      <h2 className="text-lg font-bold mb-6 bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent">{title}</h2>
-      {loading ? <div className="flex justify-center py-8"><Loader2 className="animate-spin text-[#F97316]"/></div> : data.length === 0 ? <p className="text-[#475569]">No tickets.</p> : (
+    <div className="bg-white border border-slate-200 rounded-2xl p-7 shadow-sm">
+      <h2 className="text-lg font-semibold mb-6 text-slate-900">{title}</h2>
+      {loading ? <div className="flex justify-center py-8"><Loader2 className="animate-spin text-blue-600"/></div> : data.length === 0 ? <p className="text-slate-500">No tickets.</p> : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/10 text-[#475569] uppercase text-xs">
-                <th className="px-4 py-3 text-left">Title</th>
-                <th className="px-4 py-3 text-left">Status</th>
-                <th className="px-4 py-3 text-left">Assign Technician</th>
-                <th className="px-4 py-3 text-right">Created</th>
+              <tr className="border-b border-slate-100 text-slate-500 uppercase text-xs font-semibold">
+                <th className="px-4 py-3 text-left tracking-wide">Title</th>
+                <th className="px-4 py-3 text-left tracking-wide">Status</th>
+                <th className="px-4 py-3 text-left tracking-wide">Assign Technician</th>
+                <th className="px-4 py-3 text-right tracking-wide">Created</th>
               </tr>
             </thead>
             <tbody>
               {data.map((t) => (
-                <tr key={t._id} className="border-b border-white/[0.04] hover:bg-[#F97316]/[0.03]">
-                  <td className="px-4 py-3 text-[#E2E8F0]">{t.title}</td>
+                <tr key={t._id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                  <td className="px-4 py-3 font-medium text-slate-800">{t.title}</td>
                   <td className="px-4 py-3"><StatusBadge s={t.status}/></td>
                   <td className="px-4 py-3">
-                    <select className="bg-[#0A0A0F] border border-white/10 rounded-lg px-2 py-1 text-xs text-[#E2E8F0] outline-none focus:border-[#F97316]"
+                    <select className="bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-xs text-slate-800 outline-none focus:border-blue-500 transition-colors"
                       defaultValue="" onChange={(e) => assignTicketManually(t._id, e.target.value)} disabled={assignLoading}>
                       <option value="" disabled>Assign...</option>
                       {technicians.map((tech) => (
@@ -251,7 +247,7 @@ function TicketsTable({ title, loading, data, technicians, assignTicketManually,
                       ))}
                     </select>
                   </td>
-                  <td className="px-4 py-3 text-right font-mono text-xs text-[#475569]">{new Date(t.createdAt).toLocaleDateString()}</td>
+                  <td className="px-4 py-3 text-right font-mono text-xs text-slate-500">{new Date(t.createdAt).toLocaleDateString()}</td>
                 </tr>
               ))}
             </tbody>
@@ -267,18 +263,18 @@ function Table({ data }) {
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-white/10 text-[#475569] uppercase text-xs">
-            <th className="px-4 py-3 text-left">Title</th>
-            <th className="px-4 py-3 text-left">Status</th>
-            <th className="px-4 py-3 text-right">Created</th>
+          <tr className="border-b border-slate-100 text-slate-500 uppercase text-xs font-semibold">
+            <th className="px-4 py-3 text-left tracking-wide">Title</th>
+            <th className="px-4 py-3 text-left tracking-wide">Status</th>
+            <th className="px-4 py-3 text-right tracking-wide">Created</th>
           </tr>
         </thead>
         <tbody>
           {data.map((t) => (
-            <tr key={t._id} className="border-b border-white/[0.04] hover:bg-[#F97316]/[0.03]">
-              <td className="px-4 py-3 text-[#E2E8F0]">{t.title}</td>
+            <tr key={t._id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+              <td className="px-4 py-3 font-medium text-slate-800">{t.title}</td>
               <td className="px-4 py-3"><StatusBadge s={t.status}/></td>
-              <td className="px-4 py-3 text-right font-mono text-xs text-[#475569]">{new Date(t.createdAt).toLocaleDateString()}</td>
+              <td className="px-4 py-3 text-right font-mono text-xs text-slate-500">{new Date(t.createdAt).toLocaleDateString()}</td>
             </tr>
           ))}
         </tbody>
@@ -288,28 +284,28 @@ function Table({ data }) {
 }
 
 function RoleBadge({ role }) {
-  const c = {admin: "bg-[#F97316]/10 text-[#F97316] border-[#F97316]/20", technician: "bg-[#22C55E]/10 text-[#4ADE80] border-[#22C55E]/20", employee: "bg-[#64748B]/10 text-[#94A3B8] border-[#64748B]/20"};
+  const c = {admin: "bg-indigo-50 text-indigo-700 border-indigo-200", technician: "bg-green-50 text-green-700 border-green-200", employee: "bg-slate-100 text-slate-600 border-slate-200"};
   return <span className={`px-2.5 py-1 text-xs font-semibold rounded-lg border ${c[role]||c.employee}`}>{role}</span>;
 }
 
 function StatusBadge({ s }) {
-  const c = {Resolved: "bg-[#22C55E]/10 text-[#4ADE80] border-[#22C55E]/20", Pending: "bg-[#F59E0B]/10 text-[#FCD34D] border-[#F59E0B]/20"};
-  return <span className={`px-2.5 py-1 text-xs font-semibold rounded-lg border ${c[s]||"bg-[#3B82F6]/10 text-[#93C5FD] border-[#3B82F6]/20"}`}>{s}</span>;
+  const c = {Resolved: "bg-green-50 text-green-700 border-green-200", Pending: "bg-amber-50 text-amber-700 border-amber-200"};
+  return <span className={`px-2.5 py-1 text-xs font-semibold rounded-lg border ${c[s]||"bg-blue-50 text-blue-700 border-blue-200"}`}>{s}</span>;
 }
 
 function CreateUserModal({ setShowCreateModal, setNewUser, createUser }) {
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50 animate-fadeIn">
-      <div className="w-[400px] bg-[#16161E] border border-[#F97316]/20 p-8 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.6)] animate-scaleIn">
-        <h2 className="text-xl font-bold mb-6 bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent">Create New User</h2>
-        <input type="text" placeholder="Full Name" className="w-full bg-[#0A0A0F] border border-white/10 rounded-xl px-4 py-3 mb-3 text-sm text-[#F1F5F9] outline-none focus:border-[#F97316]" onChange={(e) => setNewUser(p => ({ ...p, name: e.target.value }))} />
-        <input type="email" placeholder="Email Address" className="w-full bg-[#0A0A0F] border border-white/10 rounded-xl px-4 py-3 mb-3 text-sm text-[#F1F5F9] outline-none focus:border-[#F97316]" onChange={(e) => setNewUser(p => ({ ...p, email: e.target.value }))} />
-        <input type="password" placeholder="Set Password" className="w-full bg-[#0A0A0F] border border-white/10 rounded-xl px-4 py-3 mb-3 text-sm text-[#F1F5F9] outline-none focus:border-[#F97316]" onChange={(e) => setNewUser(p => ({ ...p, password: e.target.value }))} />
-        <select className="w-full bg-[#0A0A0F] border border-white/10 rounded-xl px-4 py-3 mb-6 text-sm text-[#F1F5F9] outline-none focus:border-[#F97316]" onChange={(e) => setNewUser(p => ({ ...p, role: e.target.value }))}>
+    <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex justify-center items-center z-50 animate-fadeIn">
+      <div className="w-[400px] bg-white border border-slate-200 p-8 rounded-2xl shadow-2xl animate-scaleIn">
+        <h2 className="text-xl font-semibold mb-6 text-slate-900">Create New User</h2>
+        <input type="text" placeholder="Full Name" className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mb-3 text-sm text-slate-900 outline-none focus:border-blue-500 transition-colors" onChange={(e) => setNewUser(p => ({ ...p, name: e.target.value }))} />
+        <input type="email" placeholder="Email Address" className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mb-3 text-sm text-slate-900 outline-none focus:border-blue-500 transition-colors" onChange={(e) => setNewUser(p => ({ ...p, email: e.target.value }))} />
+        <input type="password" placeholder="Set Password" className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mb-3 text-sm text-slate-900 outline-none focus:border-blue-500 transition-colors" onChange={(e) => setNewUser(p => ({ ...p, password: e.target.value }))} />
+        <select className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mb-6 text-sm text-slate-900 outline-none focus:border-blue-500 transition-colors" onChange={(e) => setNewUser(p => ({ ...p, role: e.target.value }))}>
           <option value="employee">Employee</option><option value="technician">Technician</option>
         </select>
-        <button onClick={createUser} className="w-full py-3 rounded-xl font-bold text-white bg-gradient-to-r from-[#F97316] to-[#EA580C] hover:shadow-[0_4px_16px_rgba(249,115,22,0.3)] transition-all mb-3">Create User</button>
-        <button onClick={() => setShowCreateModal(false)} className="w-full py-3 rounded-xl font-medium text-[#94A3B8] bg-white/5 hover:bg-white/10 transition-colors">Cancel</button>
+        <button onClick={createUser} className="w-full py-3 rounded-xl font-semibold text-white bg-slate-900 hover:bg-slate-800 transition-all mb-3">Create User</button>
+        <button onClick={() => setShowCreateModal(false)} className="w-full py-3 rounded-xl font-medium text-slate-600 bg-slate-50 border border-slate-200 hover:bg-slate-100 transition-colors">Cancel</button>
       </div>
     </div>
   );
@@ -317,15 +313,15 @@ function CreateUserModal({ setShowCreateModal, setNewUser, createUser }) {
 
 function SuccessPopup({ createdUserInfo, setShowSuccessPopup }) {
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50 animate-fadeIn">
-      <div className="w-[360px] bg-[#16161E] border border-[#22C55E]/30 p-8 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.6)] animate-scaleIn text-center">
-        <h2 className="text-xl font-bold mb-2 text-[#4ADE80]">User Created 🎉</h2>
-        <div className="bg-[#0A0A0F] border border-white/5 rounded-xl p-4 text-left my-5">
-          <p className="text-xs text-[#94A3B8] mb-1">Email</p><p className="text-sm font-medium text-[#F1F5F9] mb-3">{createdUserInfo.email}</p>
-          <p className="text-xs text-[#94A3B8] mb-1">Password</p><p className="text-sm font-medium text-[#F1F5F9]">{createdUserInfo.password}</p>
+    <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex justify-center items-center z-50 animate-fadeIn">
+      <div className="w-[360px] bg-white border border-green-200 p-8 rounded-2xl shadow-2xl animate-scaleIn text-center">
+        <h2 className="text-xl font-bold mb-2 text-green-700">User Created 🎉</h2>
+        <div className="bg-slate-50 border border-slate-100 rounded-xl p-4 text-left my-5">
+          <p className="text-xs text-slate-500 mb-1">Email</p><p className="text-sm font-medium text-slate-900 mb-3">{createdUserInfo.email}</p>
+          <p className="text-xs text-slate-500 mb-1">Password</p><p className="text-sm font-medium text-slate-900">{createdUserInfo.password}</p>
         </div>
-        <button onClick={() => { navigator.clipboard.writeText(`Email: ${createdUserInfo.email}\nPassword: ${createdUserInfo.password}`); alert("Copied!"); }} className="w-full py-3 rounded-xl font-bold text-[#0A0A0F] bg-[#4ADE80] hover:bg-[#22C55E] transition-colors mb-3">Copy Credentials</button>
-        <button onClick={() => setShowSuccessPopup(false)} className="w-full py-3 rounded-xl font-medium text-[#94A3B8] bg-white/5 hover:bg-white/10 transition-colors">Close</button>
+        <button onClick={() => { navigator.clipboard.writeText(`Email: ${createdUserInfo.email}\nPassword: ${createdUserInfo.password}`); alert("Copied!"); }} className="w-full py-3 rounded-xl font-semibold text-white bg-green-600 hover:bg-green-700 transition-colors mb-3">Copy Credentials</button>
+        <button onClick={() => setShowSuccessPopup(false)} className="w-full py-3 rounded-xl font-medium text-slate-600 bg-slate-50 border border-slate-200 hover:bg-slate-100 transition-colors">Close</button>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { User, Mail, Lock, Ticket, ShieldCheck, RefreshCw } from "lucide-react";
+import { User, Mail, Lock, ShieldCheck, RefreshCw } from "lucide-react";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -55,40 +55,39 @@ export default function Signup() {
   };
 
   const msgCls = {
-    success: "bg-[#22C55E]/10 text-[#4ADE80] border-[#22C55E]/25",
-    error:   "bg-[#EF4444]/10 text-[#FCA5A5] border-[#EF4444]/25",
-    warn:    "bg-[#F59E0B]/10 text-[#FCD34D] border-[#F59E0B]/25",
-    info:    "bg-[#F97316]/10 text-[#FDBA74] border-[#F97316]/25",
+    success: "bg-green-50 text-green-700 border-green-200",
+    error:   "bg-red-50 text-red-700 border-red-200",
+    warn:    "bg-amber-50 text-amber-700 border-amber-200",
+    info:    "bg-blue-50 text-blue-700 border-blue-200",
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0F] flex items-center justify-center px-4 py-12 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-12 relative overflow-hidden">
       {/* Glows */}
-      <div className="fixed top-0 left-0 w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(249,115,22,0.07)_0%,transparent_70%)] pointer-events-none"/>
-      <div className="fixed bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(34,197,94,0.05)_0%,transparent_70%)] pointer-events-none"/>
+      <div className="fixed top-0 left-0 w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.06)_0%,transparent_70%)] pointer-events-none"/>
+      <div className="fixed bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(99,102,241,0.04)_0%,transparent_70%)] pointer-events-none"/>
 
       <div className="w-full max-w-[440px] animate-fadeUp relative z-10">
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
-
-          <span className="text-2xl font-black bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent">SAMADHAN</span>
+          <span className="text-3xl font-display font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent tracking-tight">SAMADHAN</span>
         </div>
 
         {/* Card */}
-        <div className="bg-[#16161E] border border-[#F97316]/12 rounded-2xl p-8 shadow-[0_24px_64px_rgba(0,0,0,0.5)]">
+        <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
 
           {/* Steps */}
           <div className="flex items-center gap-3 mb-7">
             <StepDot n={1} active={step>=1} done={step>1}/>
-            <div className={`flex-1 h-0.5 rounded-full transition-all duration-500 ${step>1 ? "bg-gradient-to-r from-[#F97316] to-[#EA580C]" : "bg-[#1E293B]"}`}/>
+            <div className={`flex-1 h-0.5 rounded-full transition-all duration-500 ${step>1 ? "bg-blue-600" : "bg-slate-200"}`}/>
             <StepDot n={2} active={step>=2} done={false}/>
           </div>
 
-          <h2 className="text-2xl font-black bg-gradient-to-r from-[#F97316] to-[#FCD34D] bg-clip-text text-transparent mb-1">
+          <h2 className="text-2xl font-semibold text-slate-900 mb-1">
             {step===1 ? "Create Account ✨" : "Verify OTP 🔐"}
           </h2>
-          <p className="text-[#475569] text-sm mb-6 leading-relaxed">
-            {step===1 ? "Join SAMADHAN — your smart IT support platform" : "OTP sent to: anup03101@gmail.com"}
+          <p className="text-slate-500 text-sm mb-6 leading-relaxed">
+            {step===1 ? "Join SAMADHAN — your smart IT support platform" : "OTP sent to: " + form.email}
           </p>
 
           {msg.text && (
@@ -101,15 +100,15 @@ export default function Signup() {
           {step===1 && (
             <form onSubmit={handleSignup} className="space-y-3.5">
               <div className="relative">
-                <User size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#475569] pointer-events-none"/>
+                <User size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"/>
                 <input type="text" required placeholder="Full Name" className="inp !pl-11 w-full" value={form.name} onChange={e=>setForm({...form,name:e.target.value})}/>
               </div>
               <div className="relative">
-                <Mail size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#475569] pointer-events-none"/>
+                <Mail size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"/>
                 <input type="email" required placeholder="Email Address" className="inp !pl-11 w-full" value={form.email} onChange={e=>setForm({...form,email:e.target.value})}/>
               </div>
               <div className="relative">
-                <Lock size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#475569] pointer-events-none"/>
+                <Lock size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"/>
                 <input type="password" required placeholder="Password (min 6 chars)" className="inp !pl-11 w-full" value={form.password} onChange={e=>setForm({...form,password:e.target.value})}/>
               </div>
               <select className="inp w-full" value={form.role} onChange={e=>setForm({...form,role:e.target.value})}>
@@ -119,7 +118,7 @@ export default function Signup() {
                 <option value="headadmin">Head Admin</option>
               </select>
               <button type="submit" disabled={loading}
-                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-[#F97316] to-[#EA580C] hover:shadow-lg hover:shadow-[#F97316]/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-50 mt-1">
+                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-white bg-slate-900 hover:bg-slate-800 hover:shadow-lg hover:shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-50 mt-1">
                 {loading ? <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"/> : "Send OTP"}
               </button>
             </form>
@@ -134,29 +133,29 @@ export default function Signup() {
                     onChange={e=>handleOtpChange(e.target.value,i)}
                     onKeyDown={e=>handleOtpKeyDown(e,i)}
                     ref={el=>(inputRefs.current[i]=el)}
-                    className="w-12 h-14 text-center text-xl font-bold rounded-xl outline-none transition-all duration-200 font-mono"
+                    className="w-12 h-14 text-center text-xl font-semibold rounded-xl outline-none transition-all duration-200 font-mono"
                     style={{
-                      background: d ? "rgba(249,115,22,0.12)" : "rgba(255,255,255,0.04)",
-                      border: `2px solid ${d ? "#F97316" : "rgba(255,255,255,0.08)"}`,
-                      color: "#F1F5F9",
-                      boxShadow: d ? "0 0 14px rgba(249,115,22,0.25)" : "none",
+                      background: d ? "#eff6ff" : "#ffffff",
+                      border: `2px solid ${d ? "#3b82f6" : "#e2e8f0"}`,
+                      color: "#0f172a",
+                      boxShadow: d ? "0 0 0 4px rgba(59,130,246,0.15)" : "none",
                     }}/>
                 ))}
               </div>
               <button type="submit" disabled={loading}
-                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-[#F97316] to-[#EA580C] hover:shadow-lg hover:shadow-[#F97316]/30 hover:scale-[1.02] transition-all disabled:opacity-50">
+                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-white bg-slate-900 hover:bg-slate-800 hover:shadow-lg hover:shadow-blue-500/10 hover:scale-[1.02] transition-all disabled:opacity-50">
                 {loading ? <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"/> : <><ShieldCheck size={17}/> Verify & Activate</>}
               </button>
               <button type="button" onClick={handleResendOtp} disabled={cooldown>0||loading}
-                className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-colors ${cooldown>0 ? "text-[#334155] cursor-not-allowed" : "text-[#F97316] hover:bg-[#F97316]/5"}`}>
+                className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-colors ${cooldown>0 ? "text-slate-400 cursor-not-allowed" : "text-blue-600 hover:bg-blue-50"}`}>
                 <RefreshCw size={14}/> {cooldown>0 ? `Resend in ${cooldown}s` : "Resend OTP"}
               </button>
             </form>
           )}
 
-          <p className="text-center text-sm text-[#475569] mt-6">
+          <p className="text-center text-sm text-slate-500 mt-6">
             Already have an account?{" "}
-            <Link to="/login" className="text-[#F97316] font-semibold hover:underline">Sign in →</Link>
+            <Link to="/login" className="text-blue-600 font-semibold hover:underline">Sign in →</Link>
           </p>
         </div>
       </div>
@@ -166,7 +165,7 @@ export default function Signup() {
 
 function StepDot({n, active, done}) {
   return (
-    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-all duration-300 ${active ? "bg-gradient-to-br from-[#F97316] to-[#EA580C] text-white shadow-[0_4px_14px_rgba(249,115,22,0.4)]" : "bg-[#1E293B] text-[#475569] border border-[#334155]"}`}>
+    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-all duration-300 ${active ? "bg-blue-600 text-white shadow-md shadow-blue-500/20" : "bg-slate-100 text-slate-400 border border-slate-200"}`}>
       {done ? "✓" : n}
     </div>
   );
